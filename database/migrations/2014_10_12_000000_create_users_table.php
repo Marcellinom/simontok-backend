@@ -19,8 +19,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->rememberToken();
-            $table->boolean('soft_deleted')->default(false);
-            $table->integer('created_at')->useCurrent();
+            $table->boolean('soft_deleted')->default(0);
+            $table->unsignedInteger('created_at')->nullable();
+            $table->unsignedInteger('updated_at')->nullable();
         });
     }
 

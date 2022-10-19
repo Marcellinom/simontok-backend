@@ -22,7 +22,7 @@ class GenerateModelGetter extends Command
      *
      * @var string
      */
-    protected $signature = 'generate:model-getter';
+    protected $signature = 'generate:model-docs';
 
     /**
      * The console command description.
@@ -42,8 +42,7 @@ class GenerateModelGetter extends Command
     {
         // loop semua model dalam App/Models
         foreach (scandir(app_path('Models')) as $class) {
-            if ($class === '.' || $class === '..') continue;
-
+            if ($class === '.' || $class === '..' || $class === 'Shared') continue;
             $reflection_class = new ReflectionClass($class_name = substr('App\\Models\\'.$class, 0, -4));
             $php_docs = new DocBlock($reflection_class, new DocBlock\Context($reflection_class->getNamespaceName()));
 
@@ -54,14 +53,21 @@ class GenerateModelGetter extends Command
                     $method_name = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $tag->getMethodName()));
                     $action = explode('_', $method_name, 2)[0];
 
-                    if ($action === 'get' or $action === 'is') $php_docs->deleteTag($tag);
+                    if ($action === 'get' or $action === 'is' or $action === 'set') $php_docs->deleteTag($tag);
                 }
             }
-            // loop properties untuk menambah getter baru
+            // loop properties untuk menambah getter dan setter baru
             foreach ($class_name::ATTRIBUTES as $atr => $type) {
                 $cammelCaseMethod = str_replace('_', '', ucwords($atr, '_'));
-                $method = $type === 'bool' ? "is$cammelCaseMethod" : "get$cammelCaseMethod";
-                $php_docs->appendTag(DocBlock\Tag::createInstance("@method $type $method()", $php_docs));
+                $type = explode('|', $type);
+                // getter
+                $method = $type[0] === 'bool' ? "is$cammelCaseMethod" : "get$cammelCaseMethod";
+                $php_docs->appendTag(DocBlock\Tag::createInstance("@method $type[0] $method()", $php_docs));
+
+                // setter
+                $method = "set$cammelCaseMethod";
+                $param = isset($type[1]) ? "$$atr = $type[1]" : "$$atr";
+                $php_docs->appendTag(DocBlock\Tag::createInstance("@method void $method($param)", $php_docs));
             }
             // nulis docs barunya
             $content = File::get($reflection_class->getFileName());
