@@ -23,7 +23,8 @@ trait SimontokClassTrait
         if ($method_name[0] === 'set' and self::ATTRIBUTES[$method_name[1]] !== null) {
             $atr = $method_name[1];
             $this->$atr = $parameters[0];
+            return $this;
         }
-        return $this;
+        return parent::__call($method, $parameters);
     }
 }

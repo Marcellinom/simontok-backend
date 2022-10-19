@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\UserController;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,3 +21,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/register_user', [UserController::class, 'register']);
+Route::post('/login_user', [UserController::class, 'login']);
+
+Route::get('/', function () {
+    $user = User::first();
+    $user->setName('bababooey');
+    $user->persist();
+    dd(User::first());
+});
