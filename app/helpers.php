@@ -1,17 +1,10 @@
 <?php
 
-namespace App\Models\Shared;
-
-use DB;
-use Throwable;
-
-class DbTransaction
-{
+if (!function_exists('use_db_transaction')) {
     /**
      * @throws Throwable
      */
-    public static function run($callback)
-    {
+    function use_db_transaction(callable $callback) {
         DB::beginTransaction();
         try {
             $res = $callback();
