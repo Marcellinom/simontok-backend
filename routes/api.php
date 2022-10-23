@@ -22,6 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/register_user', [UserController::class, 'register']);
 Route::post('/login_user', [UserController::class, 'login']);
+Route::post('/send_otp', [UserController::class, 'sendOtp']);
 
 Route::get('/', function () {
     $user = User::first();

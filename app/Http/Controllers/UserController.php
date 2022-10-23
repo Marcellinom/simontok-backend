@@ -7,6 +7,8 @@ use App\Services\LoginUser\LoginUserRequest;
 use App\Services\LoginUser\LoginUserService;
 use App\Services\RegisterUser\RegisterUserRequest;
 use App\Services\RegisterUser\RegisterUserService;
+use App\Services\SendEmailOtp\SendEmailOtpRequest;
+use App\Services\SendEmailOtp\SendEmailOtpService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Throwable;
@@ -32,5 +34,15 @@ class UserController extends Controller
         $request = new LoginUserRequest($request->input('email'), $request->input('password'));
         $response = use_db_transaction(fn () => $service->execute($request));
         return $this->successWithData($response);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function sendOtp(Request $request, SendEmailOtpService $service)
+    {
+        $request = new SendEmailOtpRequest($request->input('email'));
+        use_db_transaction(fn () => $service->execute($request));
+        return $this->success();
     }
 }

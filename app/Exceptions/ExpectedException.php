@@ -10,7 +10,7 @@ class ExpectedException extends Exception
 {
     private static int $status;
 
-    public function __construct(string $message, int $code, int $status = 500)
+    public function __construct(string $message, int $code, int $status = 400)
     {
         self::$status = $status;
         parent::__construct($message, $code);
@@ -19,7 +19,7 @@ class ExpectedException extends Exception
     /**
      * @throws Exception
      */
-    public static function throw(string $message, int $code, int $status = 500)
+    public static function throw(string $message, int $code, int $status = 400)
     {
         throw new self($message, $code, $status);
     }
