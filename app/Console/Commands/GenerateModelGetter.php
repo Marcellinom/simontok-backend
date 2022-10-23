@@ -46,7 +46,7 @@ class GenerateModelGetter extends Command
             $reflection_class = new ReflectionClass($class_name = substr('App\\Models\\'.$class, 0, -4));
             $php_docs = new DocBlock($reflection_class, new DocBlock\Context($reflection_class->getNamespaceName()));
 
-            // loop untuk menghapus getter lama
+            // loop untuk menghapus getter dan setter lama
             foreach ($php_docs->getTags() as $tag) {
                 if ($tag instanceof DocBlock\Tag\MethodTag) {
                     // getMethodName jadi get_method_name
@@ -59,15 +59,15 @@ class GenerateModelGetter extends Command
             // loop properties untuk menambah getter dan setter baru
             foreach ($class_name::ATTRIBUTES as $atr => $type) {
                 $cammelCaseMethod = str_replace('_', '', ucwords($atr, '_'));
-                $type = explode('|', $type);
+                $splitted_type = explode('|', $type);
                 // getter
-                $method = $type[0] === 'bool' ? "is$cammelCaseMethod" : "get$cammelCaseMethod";
-                $php_docs->appendTag(DocBlock\Tag::createInstance("@method $type[0] $method()", $php_docs));
+                $method = $splitted_type[0] === 'bool' ? "is$cammelCaseMethod" : "get$cammelCaseMethod";
+                $php_docs->appendTag(DocBlock\Tag::createInstance("@method $type $method()", $php_docs));
 
                 // setter
                 $method = "set$cammelCaseMethod";
-                $param = isset($type[1]) ? "$$atr = $type[1]" : "$$atr";
-                $php_docs->appendTag(DocBlock\Tag::createInstance("@method void $method($type[0] $param)", $php_docs));
+                $param = isset($splitted_type[1]) ? "$$atr = $splitted_type[1]" : "$$atr";
+                $php_docs->appendTag(DocBlock\Tag::createInstance("@method void $method($splitted_type[0] $param)", $php_docs));
             }
             // nulis docs barunya
             $content = File::get($reflection_class->getFileName());

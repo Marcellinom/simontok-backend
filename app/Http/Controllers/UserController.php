@@ -27,7 +27,7 @@ class UserController extends Controller
     /**
      * @throws Throwable
      */
-    public function login(Request $request, LoginUserService $service)
+    public function login(Request $request, LoginUserService $service): JsonResponse
     {
         $request = new LoginUserRequest($request->input('email'), $request->input('password'));
         $response = use_db_transaction(fn () => $service->execute($request));
