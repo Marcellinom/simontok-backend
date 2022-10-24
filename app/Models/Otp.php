@@ -102,4 +102,10 @@ class Otp extends Model
         'created_at' => DateTime::class,
         'cooldown' => DateTime::class,
     ];
+
+    public function user(): User|null
+    {
+        $res = $this->belongsTo(User::class, 'user_id', 'id')->first();
+        return $res instanceof User ? $res : null;
+    }
 }

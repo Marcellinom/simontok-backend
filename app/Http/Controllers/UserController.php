@@ -9,6 +9,8 @@ use App\Services\RegisterUser\RegisterUserRequest;
 use App\Services\RegisterUser\RegisterUserService;
 use App\Services\SendEmailOtp\SendEmailOtpRequest;
 use App\Services\SendEmailOtp\SendEmailOtpService;
+use App\Services\VerifyOtp\VerifyOtpRequest;
+use App\Services\VerifyOtp\VerifyOtpService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Throwable;
@@ -42,6 +44,16 @@ class UserController extends Controller
     public function sendOtp(Request $request, SendEmailOtpService $service)
     {
         $request = new SendEmailOtpRequest($request->input('email'));
+        use_db_transaction(fn () => $service->execute($request));
+        return $this->success();
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function verifyOtp(Request $request, VerifyOtpService $service)
+    {
+        $request = new VerifyOtpRequest($request->input('user_id'), $request->input('otp'));
         use_db_transaction(fn () => $service->execute($request));
         return $this->success();
     }

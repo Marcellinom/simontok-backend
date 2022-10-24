@@ -79,7 +79,7 @@ class User extends Authenticatable
                 'remember_token' => $this->getRememberToken(),
                 'soft_deleted' => $this->isSoftDeleted(),
                 'created_at' => $this->getCreatedAt() ? $this->getCreatedAt()->getTimestamp() : null,
-                'updated_at' => $this->getUpdatedAt() ? $this->getUpdatedAt()->getTimestamp() : (new DateTime())->getTimestamp(),
+                'updated_at' => (new DateTime())->getTimestamp(),
                 'email_verified_at' => $this->getEmailVerifiedAt() ? $this->getEmailVerifiedAt()->getTimestamp() : null
             ],
             'id'
@@ -137,4 +137,10 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function otp(): ?Otp
+    {
+        $res = $this->hasOne(Otp::class, 'user_id', 'id')->first();
+        return $res instanceof Otp ? $res : null;
+    }
 }

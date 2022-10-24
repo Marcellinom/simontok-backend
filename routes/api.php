@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\UserController;
+use App\Models\Otp;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -23,10 +24,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/register_user', [UserController::class, 'register']);
 Route::post('/login_user', [UserController::class, 'login']);
 Route::post('/send_otp', [UserController::class, 'sendOtp']);
+Route::post('verify_otp', [UserController::class, 'verifyOtp']);
 
 Route::get('/', function () {
-    $user = User::first();
-    $user->setName('bababooey');
-    $user->persist();
-    dd(User::first());
+    $user = User::find(1);
+    dd($user->otp());
 });
