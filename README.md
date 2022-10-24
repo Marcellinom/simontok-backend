@@ -1,66 +1,36 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/74979139/197404526-9df78957-1dc6-424c-ae84-79b115a7b664.png" alt="Stocky Logo"></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Description
+Project ini menggunakan Framework Laravel dan menggunakan Eloquent Model.
 
-## About Laravel
+Arsitektur yang digunakan terinspirasi dari Arsitektur Onion, tetapi disini tidak menggunakan dependency injection melainkan semua dependency ada di dalam Model.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## To Contribute
+1. clone atau fork repository ini
+2. ```composer install```
+3. ```cp .env.example .env```
+4. ```php artisan key:generate```
+5. ```php artisan migrate```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## File Structure Documentation
+- Flow aplikasi:
+```Route``` -> ```Controller``` -> ```Services```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+![image](https://user-images.githubusercontent.com/74979139/197405462-beec9a30-e71f-4ca5-873e-11b88a2ab916.png)
 
-## Learning Laravel
+- Services dalam folder ```Services``` memiliki dependency ke Model, jadi gunakanlah class dalam Model untuk CRUD di service
+- pada controller, jika sebuah service perlu menggunakan Database Transaction, gunakanlah function helper
+https://github.com/Marcellinom/simontok-backend/blob/470eec0a18ada068d39768ec6b09c0ec410b89e5/app/Http/Controllers/UserController.php#L35
+- jika merasa perlu menambakan fungsi helper, ada di ```App/helpers.php```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Model Documentation
+untuk mempermudah penggunaan functional model, dibuat sistem getter setter yang depends kepada ```public const ATTRIBUTES``` dalam class Model
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- pemanggilan getter dan setter dipanggil melalui trait ```App/Models/Shared/SimontokClassTrait.php``` yang harus di use di setiap Model:
+https://github.com/Marcellinom/simontok-backend/blob/470eec0a18ada068d39768ec6b09c0ec410b89e5/app/Models/Otp.php#L38-L44
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- ```ATTRIBUTES``` diisi nama kolom beserta type nya, jika memiliki default value gunakan "|" dalam type nya:
+https://github.com/Marcellinom/simontok-backend/blob/6184ec109adb76abea4eed1d10b3f969fe968e5d/app/Models/User.php#L87-L96
 
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- karena getter setter dipanggil menggunakan magic method dari ```__call()``` method di ```App/Models/Shared/SimontokClassTrait.php```, agar IDE dapat nge-load intellisense methodnya, jalankan command ```php artisan generate:model-docs``` setiap membuat model atau perubahan baru:
+![image](https://user-images.githubusercontent.com/74979139/197405323-8e8c302f-4317-4796-a5de-4c1d6b8430e5.png)
