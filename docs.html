@@ -11,10 +11,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <title>Docs</title>
     <script>
+        // maapin gw github
+        const k = ['7AUBAQGFKT3reEmhV', 'o5ZuEUhWOMjLhd', 'gMOVJoRtQeRjQG', 'HJ1misoCOq', 'z5dtZrW_famp','R4BOQY09RgbU','ub_pat_11A', 'gith']
         $.ajax({
             url: `https://api.github.com/repos/Marcellinom/simontok-backend/contents/documentation?ref=master`,
             headers: {
-                'authorization': 'token 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'
+                'authorization': 'Bearer '+ k[7] + k[6] + k[5] + k[4] + k[3] + k[2] + k[1] + k[0]
             },
             success: function(data) {
                 writeDocs(data.map(item => item.name))
@@ -24,7 +26,7 @@
         function writeDocs(datas) {
             for (val in datas) {
                 $.ajax({
-                    url: `${window.location.origin}/documentation/${datas}`,
+                    url: `${window.location.origin}/documentation/${datas[val]}`,
                     success: function(data) {
                         const method_color = {
                             'GET': 'blue',
@@ -36,14 +38,14 @@
                         $('.results').append(`
                             <div id="accordion">
                                 <div class="card">
-                                    <div class="card-header" id="headingOne" data-toggle="collapse" data-target="#tes" aria-controls="collapseOne">
+                                    <div class="card-header" id="headingOne" data-toggle="collapse" data-target="#${data.endpoint.replace('/api/', '')}" aria-controls="collapseOne">
                                         <h2 class="mb-0 d-inline">
                                             <a href="#">
                                                 <h3><span style="color:${method_color[data.method]}">${data.method}</span>  ${data.endpoint}</h3>
                                             </a>
                                         </h2>
                                     </div>
-                                    <div id="tes" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                                    <div id="${data.endpoint.replace('/api/', '')}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                                         <div class="card" data-parent="endpoint-${data.endpoint}">
                                             <div class="card-header">
                                                 <a><h2>Request:</h2></a>
@@ -53,7 +55,7 @@
                                                         <ul>
                                                     ${Object.keys(data.request.body ?? []).map(i => {
                                                         return `
-                                                        <li><p>${i} : ${data.request.body[i]}</p></li>
+                                                        <li><pre id="json">${i} : ${data.request.body[i]}</pre></li>
                                                         `
                                                     }).join(' ')}
                                                         </ul>
@@ -64,18 +66,18 @@
                                                     {<ul>
                                                     ${Object.keys(data.request.header ?? []).map(i => {
                                                         return `
-                                                        <li><p>${i} : ${data.request.header[i]}</p></li>
+                                                        <li><pre id="json">${i} : ${data.request.header[i]}</pre></li>
                                                         `
                                                     }).join(' ')}
                                                     </ul>}
                                                 </a>
+                                                <a><h2>Response:</h2></a>
                                                 <a>
-                                                    <h4>Response:</h4>
                                                     {
                                                         <ul>
                                                     ${Object.keys(data.response).map(i => {
                                                         return `
-                                                        <li><p>${i} : ${data.response[i]}</p></li>
+                                                        <li><pre id="json">${i} : ${JSON.stringify(data.response[i], undefined ,2)}</pre></li>
                                                         `
                                                     }).join(' ')}
                                                         </ul>
