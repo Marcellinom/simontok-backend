@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Exceptions\ExpectedException;
 use App\Services\LoginUser\LoginUserRequest;
 use App\Services\LoginUser\LoginUserService;
 use App\Services\RegisterUser\RegisterUserRequest;
@@ -14,6 +15,7 @@ use App\Services\VerifyOtp\VerifyOtpService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Throwable;
+use Validator;
 use function use_db_transaction;
 
 class UserController extends Controller
@@ -23,6 +25,9 @@ class UserController extends Controller
      */
     public function register(Request $request, RegisterUserService $service): JsonResponse
     {
+        if (Validator::make($request->input(), [
+            'email' => 'email|required'
+        ])->fails()) ExpectedException::throw("invalid email format", 1020);
         $request = new RegisterUserRequest($request->input('name'), $request->input('email'), $request->input('password'));
         use_db_transaction(fn () => $service->execute($request));
         return $this->success();
