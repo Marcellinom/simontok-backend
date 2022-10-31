@@ -26,7 +26,7 @@
         function writeDocs(datas) {
             for (val in datas) {
                 $.ajax({
-                    url: `${window.location.origin}/documentation/${datas[val]}`,
+                    url: `${window.location.origin}/simontok-backend/documentation/${datas[val]}`,
                     success: function(data) {
                         const method_color = {
                             'GET': 'blue',
