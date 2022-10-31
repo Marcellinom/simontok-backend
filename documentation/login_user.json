@@ -1,0 +1,16 @@
+{
+    "endpoint": "/api/login_user",
+    "method": "POST",
+    "request": {
+        "body": {
+            "email": "string with email format",
+            "password": "string"
+        }
+    },
+    "response": {
+        "success": "true",
+        "data": {
+            "token": "string"
+        }
+    }
+}
