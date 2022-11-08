@@ -3,16 +3,16 @@
     "method": "GET",
     "request": {
       "header": {
-        "Authorization": `Bearer ${token}`
+        "Authorization": "Bearer ${token}"
       }
     },
     "response": {
-        "id": integer,
-        "name": string,
-        "email": string with email format,
-        "email_verified_at": DateTime (Y-m-dTH:M:s) | null,
-        "soft_deleted": bool,
-        "created_at": DateTime (Y-m-dTH:M:s),
-        "updated_at": DateTime (Y-m-dTH:M:s)
+        "id": "integer",
+        "name": "string",
+        "email": "string with email format",
+        "email_verified_at": "DateTime (Y-m-dTH:M:s) | null",
+        "soft_deleted": "bool",
+        "created_at": "DateTime (Y-m-dTH:M:s)",
+        "updated_at": "DateTime (Y-m-dTH:M:s)"
     }
 }
