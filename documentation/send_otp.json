@@ -1,0 +1,12 @@
+{
+    "endpoint": "/api/send_otp",
+    "method": "POST",
+    "request": {
+        "body": {
+            "email": "string with email format",
+        }
+    },
+    "response": {
+        "success": "true"
+    }
+}
