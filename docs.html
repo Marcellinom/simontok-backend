@@ -77,7 +77,7 @@
                                                         <ul>
                                                     ${Object.keys(data.response).map(i => {
                                                         return `
-                                                        <li><pre id="json">${i} : ${JSON.stringify(data.response[i], undefined ,2)}</pre></li>
+                                                        <li><pre id="json">${i} : ${data.response[i]}</pre></li>
                                                         `
                                                     }).join(' ')}
                                                         </ul>
