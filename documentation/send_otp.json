@@ -3,7 +3,7 @@
     "method": "POST",
     "request": {
         "body": {
-            "email": "string with email format",
+            "email": "string with email format"
         }
     },
     "response": {
