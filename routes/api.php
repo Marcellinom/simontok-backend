@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MarketplaceController;
 use App\Http\Controllers\UserController;
 use App\Models\Otp;
 use App\Models\User;
@@ -19,6 +20,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+Route::middleware(['auth:sanctum', 'must_verify_email'])->group(function () {
+    Route::post('/register_marketplace', [MarketplaceController::class, 'registerMarketplace']);
 });
 
 Route::post('/register_user', [UserController::class, 'register']);

@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('otp', function (Blueprint $table) {
+        Schema::create('marketplace', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->integer('otp');
-            $table->unsignedInteger('created_at');
-            $table->unsignedInteger('cooldown');
+            $table->string('name')->index();
+            $table->bigInteger('created_at');
 
             $table->foreign('user_id')->references('id')->on('users');
         });
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('otp');
+        Schema::dropIfExists('marketplace');
     }
 };
