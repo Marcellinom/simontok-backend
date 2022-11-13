@@ -1,0 +1,15 @@
+{
+    "endpoint": "/api/register_marketplace",
+    "method": "POST",
+    "request": {
+        "body": {
+            "name": "string"
+        },
+        "header": {
+            "Authorization": "Bearer ${token}"
+        }
+    },
+    "response": {
+        "success": "true"
+    }
+}
