@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 
 use App\Exceptions\ExpectedException;
+use App\Models\Shared\Email;
+use App\Services\ForgotPassword\ForgotPasswordRequest;
+use App\Services\ForgotPassword\ForgotPasswordService;
 use App\Services\LoginUser\LoginUserRequest;
 use App\Services\LoginUser\LoginUserService;
 use App\Services\RegisterUser\RegisterUserRequest;
@@ -25,10 +28,21 @@ class UserController extends Controller
      */
     public function register(Request $request, RegisterUserService $service): JsonResponse
     {
-        if (Validator::make($request->input(), [
-            'email' => 'email|required'
-        ])->fails()) ExpectedException::throw("invalid email format", 1020);
+        Email::validate($request->input('email'));
+
         $request = new RegisterUserRequest($request->input('name'), $request->input('email'), $request->input('password'));
+        use_db_transaction(fn () => $service->execute($request));
+        return $this->success();
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function forgot_password(Request $request, ForgotPasswordService $service): JsonResponse
+    {
+        Email::validate($request->input('email'));
+
+        $request = new ForgotPasswordRequest($request->input('email'));
         use_db_transaction(fn () => $service->execute($request));
         return $this->success();
     }

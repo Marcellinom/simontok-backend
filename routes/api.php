@@ -26,6 +26,7 @@ Route::middleware(['auth:sanctum', 'must_verify_email'])->group(function () {
 });
 
 Route::post('/register_user', [UserController::class, 'register']);
+Route::post('/forgot_password', [UserController::class, 'forgot_password']);
 Route::post('/login_user', [UserController::class, 'login']);
 Route::post('/send_otp', [UserController::class, 'sendOtp']);
 Route::post('verify_otp', [UserController::class, 'verifyOtp']);
