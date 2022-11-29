@@ -15,14 +15,22 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Marketplace newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Marketplace query()
  * @mixin \Eloquent
+ * @property int $id
+ * @property int $user_id
+ * @property string $name
+ * @property \Illuminate\Support\Carbon $created_at
+ * @method static \Illuminate\Database\Eloquent\Builder|Marketplace whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Marketplace whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Marketplace whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Marketplace whereUserId($value)
  * @method int getId()
- * @method void setId(int $id)
+ * @method self setId(int $id)
  * @method int getUserId()
- * @method void setUserId(int $user_id)
+ * @method self setUserId(int $user_id)
  * @method string getName()
- * @method void setName(string $name)
+ * @method self setName(string $name)
  * @method DateTime|null getCreatedAt()
- * @method void setCreatedAt(DateTime $created_at = null)
+ * @method self setCreatedAt(DateTime $created_at = null)
  */
 class Marketplace extends Model
 {

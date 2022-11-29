@@ -68,7 +68,7 @@ class GenerateModelGetter extends Command
                 // setter
                 $method = "set$cammelCaseMethod";
                 $param = isset($splitted_type[1]) ? "$$atr = $splitted_type[1]" : "$$atr";
-                $php_docs->appendTag(DocBlock\Tag::createInstance("@method void $method($splitted_type[0] $param)", $php_docs));
+                $php_docs->appendTag(DocBlock\Tag::createInstance("@method self $method($splitted_type[0] $param)", $php_docs));
             }
             // nulis docs barunya
             $content = File::get($reflection_class->getFileName());

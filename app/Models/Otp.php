@@ -27,13 +27,13 @@ use function config;
  * @method static \Illuminate\Database\Eloquent\Builder|Otp whereOtp($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Otp whereUserId($value)
  * @method int getUserId()
- * @method void setUserId(int $user_id)
+ * @method self setUserId(int $user_id)
  * @method int getOtp()
- * @method void setOtp(int $otp)
+ * @method self setOtp(int $otp)
  * @method DateTime getCreatedAt()
- * @method void setCreatedAt(DateTime $created_at)
+ * @method self setCreatedAt(DateTime $created_at)
  * @method DateTime getCooldown()
- * @method void setCooldown(DateTime $cooldown)
+ * @method self setCooldown(DateTime $cooldown)
  */
 class Otp extends Model
 {
