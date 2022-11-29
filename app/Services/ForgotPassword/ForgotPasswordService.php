@@ -9,8 +9,10 @@ use Carbon\CarbonInterval;
 use Crypt;
 use DB;
 use Exception;
+use Hash;
 use Illuminate\Mail\Mailable;
 use Mail;
+use Ramsey\Uuid\Uuid;
 
 class ForgotPasswordService
 {
@@ -32,16 +34,10 @@ class ForgotPasswordService
             ExpectedException::throw("password reset is under cooldown", 2022);
         }
 
-        $token = Crypt::encrypt(
-            [
-                'id' => $user->getId()
-            ]
-        );
-
         DB::table('password_resets')->updateOrInsert([
             'email' => $request->getEmail()
         ], [
-            'token' => $token,
+            'token' => $token = Hash::make($user->getId()."|".$user->getEmail()),
             'created_at' => Carbon::now()
         ]);
 

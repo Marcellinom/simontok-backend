@@ -24,7 +24,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware(['auth:sanctum', 'must_verify_email'])->group(function () {
     Route::post('/register_marketplace', [MarketplaceController::class, 'registerMarketplace']);
 });
-
+Route::post('/reset_password', [UserController::class, 'reset_password']);
 Route::post('/register_user', [UserController::class, 'register']);
 Route::post('/forgot_password', [UserController::class, 'forgot_password']);
 Route::post('/login_user', [UserController::class, 'login']);

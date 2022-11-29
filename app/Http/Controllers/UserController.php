@@ -11,6 +11,8 @@ use App\Services\LoginUser\LoginUserRequest;
 use App\Services\LoginUser\LoginUserService;
 use App\Services\RegisterUser\RegisterUserRequest;
 use App\Services\RegisterUser\RegisterUserService;
+use App\Services\ResetPassword\ResetPasswordRequest;
+use App\Services\ResetPassword\ResetPasswordService;
 use App\Services\SendEmailOtp\SendEmailOtpRequest;
 use App\Services\SendEmailOtp\SendEmailOtpService;
 use App\Services\VerifyOtp\VerifyOtpRequest;
@@ -19,6 +21,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Throwable;
 use Validator;
+use function resolve;
 use function use_db_transaction;
 
 class UserController extends Controller
@@ -44,6 +47,23 @@ class UserController extends Controller
 
         $request = new ForgotPasswordRequest($request->input('email'));
         use_db_transaction(fn () => $service->execute($request));
+        return $this->success();
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function reset_password(Request $request, ResetPasswordService $service): JsonResponse
+    {
+        Email::validate($request->input('email'));
+        use_db_transaction(fn () => $service->execute(
+                new ResetPasswordRequest(
+                    $request->input('email'),
+                    $request->input('token'),
+                    $request->input('new_password')
+                )
+            )
+        );
         return $this->success();
     }
 
