@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Services\CreateProduct\CreateProductRequest;
 use App\Services\CreateProduct\CreateProductService;
+use App\Services\EditProduct\AddProductMovementRequest;
+use App\Services\EditProduct\EditProductRequest;
+use App\Services\EditProduct\EditProductService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Throwable;
@@ -14,7 +17,7 @@ class ProductController extends Controller
     /**
      * @throws Throwable
      */
-    public function create_product(Request $request, CreateProductService $service): JsonResponse
+    public function createProduct(Request $request, CreateProductService $service): JsonResponse
     {
         use_db_transaction(fn () => $service->execute(
             new CreateProductRequest(
@@ -24,6 +27,25 @@ class ProductController extends Controller
             ),
             $request->user()
         ));
+
+        return $this->success();
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function editProduct(Request $request, EditProductService $service): JsonResponse
+    {
+        $edit_product_request = new EditProductRequest(
+            $request->input('product_id'),
+            $request->input('name'),
+            $request->input('unit_price'),
+            $request->input('stock')
+                ? new AddProductMovementRequest($request->input('stock')['direction'], $request->input('stock')['quantity'])
+                : null
+        );
+
+        use_db_transaction(fn () => $service->execute($edit_product_request, $request->user()));
 
         return $this->success();
     }

@@ -2,7 +2,7 @@
 
 namespace App\Models\Shared;
 
-use function dd;
+use function array_key_exists;
 use function explode;
 use function preg_replace;
 use function strtolower;
@@ -16,13 +16,13 @@ trait SimontokClassTrait
         // get_method_name jadi [get, method_name]
         $method_name = explode('_', $method_name, 2);
 
-        if (($method_name[0] === 'get' or $method_name[0] === 'is') and self::ATTRIBUTES[$method_name[1]] !== null) {
+        if (($method_name[0] === 'get' or $method_name[0] === 'is') and static::ATTRIBUTES[$method_name[1]] !== null) {
             $attr = $method_name[1];
-            return $this->$attr;
+            return array_key_exists($attr, $this->casts) ? $this->getAttribute($attr) : $this->attributes[$attr];
         }
-        if ($method_name[0] === 'set' and self::ATTRIBUTES[$method_name[1]] !== null) {
+        if ($method_name[0] === 'set' and static::ATTRIBUTES[$method_name[1]] !== null) {
             $atr = $method_name[1];
-            $this->$atr = $parameters[0];
+            $this->setAttribute($atr, $parameters[0]);
             return $this;
         }
         return parent::__call($method, $parameters);
