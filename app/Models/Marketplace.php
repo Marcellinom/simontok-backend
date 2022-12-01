@@ -7,6 +7,7 @@ use DateTime;
 use DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Queue\SerializesModels;
 
 /**
  * App\Models\Marketplace
@@ -34,7 +35,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Marketplace extends Model
 {
-    use HasFactory, SimontokClassTrait;
+    use HasFactory, SimontokClassTrait, SerializesModels;
 
     protected $table = 'marketplace';
 
@@ -71,5 +72,11 @@ class Marketplace extends Model
     {
         $res = $this->belongsTo(User::class, 'id', 'user_id')->first();
         return $res instanceof User ? $res : null;
+    }
+
+    public function products(): Product|null
+    {
+        $res = $this->hasMany(Product::class, 'product_id', 'id')->first();
+        return $res instanceof Product ? $res : null;
     }
 }

@@ -18,7 +18,9 @@ trait SimontokClassTrait
 
         if (($method_name[0] === 'get' or $method_name[0] === 'is') and static::ATTRIBUTES[$method_name[1]] !== null) {
             $attr = $method_name[1];
-            return array_key_exists($attr, $this->casts) ? $this->getAttribute($attr) : $this->attributes[$attr];
+            if (array_key_exists($attr, $this->casts)) return $this->getAttribute($attr);
+            if (array_key_exists($attr, $this->getAttributes())) return $this->attributes[$attr];
+            return $this->$attr;
         }
         if ($method_name[0] === 'set' and static::ATTRIBUTES[$method_name[1]] !== null) {
             $atr = $method_name[1];

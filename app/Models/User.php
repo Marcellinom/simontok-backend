@@ -6,17 +6,19 @@ namespace App\Models;
 use App\Models\Shared\SimontokClassTrait;
 use DateTime;
 use DB;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use function every_array;
 
 /**
  * App\Models\User
  *
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
+ * @property-read Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
  * @property-read int|null $tokens_count
  * @method static \Database\Factories\UserFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
@@ -142,5 +144,14 @@ class User extends Authenticatable
     {
         $res = $this->hasOne(Otp::class, 'user_id', 'id')->first();
         return $res instanceof Otp ? $res : null;
+    }
+
+    /**
+     * @return Collection<Marketplace>
+     */
+    public function marketplace(): Collection
+    {
+        $res = $this->hasMany(Marketplace::class, 'user_id', 'id')->get();
+        return $res->filter(fn ($item) => $item instanceof Marketplace);
     }
 }

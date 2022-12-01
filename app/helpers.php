@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Support\Collection;
+
 if (!function_exists('use_db_transaction')) {
     /**
      * @throws Throwable
@@ -14,5 +17,14 @@ if (!function_exists('use_db_transaction')) {
         }
         DB::commit();
         return $res;
+    }
+}
+
+if (!function_exists('every_array')) {
+    function every_array(array|Collection|EloquentCollection $array, callable $logic): bool
+    {
+        for ($i = 0; $i < count($array); $i++)
+            if (!$logic($array[$i])) return false;
+        return true;
     }
 }

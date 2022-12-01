@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-
-use App\Exceptions\ExpectedException;
 use App\Models\Shared\Email;
 use App\Services\ForgotPassword\ForgotPasswordRequest;
 use App\Services\ForgotPassword\ForgotPasswordService;
+use App\Services\GetMarketplace\GetMarketplaceRequest;
+use App\Services\GetMarketplace\GetMarketplaceService;
 use App\Services\LoginUser\LoginUserRequest;
 use App\Services\LoginUser\LoginUserService;
 use App\Services\RegisterUser\RegisterUserRequest;
@@ -20,8 +20,6 @@ use App\Services\VerifyOtp\VerifyOtpService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Throwable;
-use Validator;
-use function resolve;
 use function use_db_transaction;
 
 class UserController extends Controller
@@ -80,7 +78,7 @@ class UserController extends Controller
     /**
      * @throws Throwable
      */
-    public function sendOtp(Request $request, SendEmailOtpService $service)
+    public function sendOtp(Request $request, SendEmailOtpService $service): JsonResponse
     {
         $request = new SendEmailOtpRequest($request->input('email'));
         use_db_transaction(fn () => $service->execute($request));
@@ -90,10 +88,17 @@ class UserController extends Controller
     /**
      * @throws Throwable
      */
-    public function verifyOtp(Request $request, VerifyOtpService $service)
+    public function verifyOtp(Request $request, VerifyOtpService $service): JsonResponse
     {
         $request = new VerifyOtpRequest($request->input('user_id'), $request->input('otp'));
         use_db_transaction(fn () => $service->execute($request));
         return $this->success();
+    }
+
+    public function getMarketPlace(Request $request, GetMarketplaceService $service): JsonResponse
+    {
+        return $this->successWithData(
+            $service->execute(new GetMarketplaceRequest($request->query('id')), $request->user())
+        );
     }
 }
