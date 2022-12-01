@@ -94,11 +94,4 @@ class UserController extends Controller
         use_db_transaction(fn () => $service->execute($request));
         return $this->success();
     }
-
-    public function getMarketPlace(Request $request, GetMarketplaceService $service): JsonResponse
-    {
-        return $this->successWithData(
-            $service->execute(new GetMarketplaceRequest($request->query('id')), $request->user())
-        );
-    }
 }

@@ -7,6 +7,8 @@ use App\Services\CreateProduct\CreateProductService;
 use App\Services\EditProduct\AddProductMovementRequest;
 use App\Services\EditProduct\EditProductRequest;
 use App\Services\EditProduct\EditProductService;
+use App\Services\GetProduct\GetProductRequest;
+use App\Services\GetProduct\GetProductService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Throwable;
@@ -48,5 +50,15 @@ class ProductController extends Controller
         use_db_transaction(fn () => $service->execute($edit_product_request, $request->user()));
 
         return $this->success();
+    }
+
+    public function getProduct(Request $request, GetProductService $service): JsonResponse
+    {
+        return $this->successWithData(
+            $service->execute(new GetProductRequest(
+                $request->query('marketplace_id'),
+                $request->query('product_id')
+            ))
+        );
     }
 }

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Shared\SimontokClassTrait;
 use DateTime;
 use DB;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Queue\SerializesModels;
@@ -74,9 +75,12 @@ class Marketplace extends Model
         return $res instanceof User ? $res : null;
     }
 
-    public function products(): Product|null
+    /**
+     * @return Collection<Product>
+     */
+    public function products(): Collection
     {
-        $res = $this->hasMany(Product::class, 'product_id', 'id')->first();
-        return $res instanceof Product ? $res : null;
+        $res = $this->hasMany(Product::class, 'marketplace_id', 'id')->get();
+        return $res->filter(fn ($product) => $product instanceof Product);
     }
 }
