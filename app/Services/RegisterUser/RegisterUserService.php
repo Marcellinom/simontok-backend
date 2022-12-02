@@ -3,6 +3,7 @@
 namespace App\Services\RegisterUser;
 
 use App\Exceptions\ExpectedException;
+use App\Models\Pembeli;
 use App\Models\User;
 use Hash;
 

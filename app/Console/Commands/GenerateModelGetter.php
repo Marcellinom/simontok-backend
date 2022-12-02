@@ -40,7 +40,7 @@ class GenerateModelGetter extends Command
      */
     public function handle()
     {
-        $this->call('ide-helper:models');
+        $this->call('ide-helper:models', ['--no-interaction']);
         // loop semua model dalam App/Models
         foreach (scandir(app_path('Models')) as $class) {
             if ($class === '.' || $class === '..' || $class === 'Shared') continue;
