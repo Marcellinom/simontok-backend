@@ -9,7 +9,10 @@ use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Ramsey\Uuid\Uuid;
+use function array_flip;
 use function array_key_exists;
+use function gettype;
+use function is_numeric;
 
 /**
  * App\Models\ProductMovement
@@ -26,7 +29,6 @@ use function array_key_exists;
  * @method self setUserId(int $user_id)
  * @method int getProductId()
  * @method self setProductId(int $product_id)
- * @method int getDirection()
  * @method self setDirection(int $direction)
  * @method float getQuantity()
  * @method self setQuantity(float $quantity)
@@ -53,6 +55,10 @@ class ProductMovement extends Model
 
     protected $table = 'product_movement';
 
+    protected $primaryKey = 'id'; // or null
+
+    public $incrementing = false;
+
     public const DIRECTION = [
         'out' => 0,
         'in' => 1,
@@ -67,6 +73,21 @@ class ProductMovement extends Model
             ExpectedException::throw("invalid direction enum", 2026);
 
         return self::DIRECTION[$direction];
+    }
+
+    public function isDirection(int $direction): bool
+    {
+        return $this->direction == $direction;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getDirection(): string
+    {
+        $direction_flipped = array_flip(self::DIRECTION);
+        if (is_numeric($this->direction) && gettype((int)$this->direction) != 'integer') ExpectedException::throw("invalid parsed direction type", 2030);
+        return $direction_flipped[$this->direction];
     }
 
     /**

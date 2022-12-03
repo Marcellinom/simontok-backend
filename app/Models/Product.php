@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Shared\SimontokClassTrait;
 use DateTime;
 use DB;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -71,7 +72,16 @@ class Product extends Model
     {
         $res = $this->belongsTo(Marketplace::class, 'id', 'marketplace_id')->first();
         return $res instanceof Marketplace ? $res : null;
+    }
 
+
+    /**
+     * @return Collection<ProductMovement>
+     */
+    public function productMovement(): Collection
+    {
+        $res = $this->hasMany(ProductMovement::class, 'product_id', 'id')->get();
+        return $res->filter(fn ($item) => $item instanceof ProductMovement);
     }
 
     protected $casts = [
