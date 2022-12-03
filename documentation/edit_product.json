@@ -1,0 +1,21 @@
+{
+    "endpoint": "/api/edit_product",
+    "method": "POST",
+    "request": {
+        "body": {
+            "product_id": "int",
+            "name": "string|null",
+            "stock|null": {
+                "direction": "enum [in, out]",
+                "quantity": "float|int"
+            }
+        },
+        "header": {
+            "Authorization": "Bearer ${token}"
+        }
+    },
+    "response": {
+        "success": "true"
+    },
+    "note": "user must verify email"
+}

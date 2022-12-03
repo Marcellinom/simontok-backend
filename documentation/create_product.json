@@ -1,0 +1,18 @@
+{
+    "endpoint": "/api/create_product",
+    "method": "POST",
+    "request": {
+        "body": {
+            "marketplace_id": "int",
+            "name": "string",
+            "unit_price": "float|int"
+        },
+        "header": {
+            "Authorization": "Bearer ${token}"
+        }
+    },
+    "response": {
+        "success": "true"
+    },
+    "note": "user must verify email"
+}
