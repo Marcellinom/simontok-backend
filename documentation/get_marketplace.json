@@ -1,0 +1,22 @@
+{
+    "endpoint": "/api/marketplace?{id}",
+    "method": "GET",
+    "request": {
+        "header": {
+            "Authorization": "Bearer ${token}"
+        }
+    },
+    "response": {
+        "success": "true",
+        "data": [
+            {
+                "id": "integer",
+                "user_id": "integer",
+                "name": "string",
+                "created_at": "DateTime"
+            }
+        ]
+    },
+    "note": "user must verify email, jika id null bakal fetch semua marketplace untuk user itu",
+    "image": "https://cdn.discordapp.com/attachments/677050949432377345/1048585650263306390/image.png"
+}
