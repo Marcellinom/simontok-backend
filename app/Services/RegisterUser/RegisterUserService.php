@@ -5,6 +5,8 @@ namespace App\Services\RegisterUser;
 use App\Exceptions\ExpectedException;
 use App\Models\Pembeli;
 use App\Models\User;
+use Carbon\Carbon;
+use DateTime;
 use Hash;
 
 class RegisterUserService
@@ -14,13 +16,20 @@ class RegisterUserService
      */
     public function execute(RegisterUserRequest $request)
     {
-        if (User::where('email', $request->getEmail())->first()) {
+        if (User::where('email', $request->getEmail())->exists()) {
             ExpectedException::throw("User already exists", 1021);
         }
-        $user = new User();
-        $user->setName($request->getName());
-        $user->setEmail($request->getEmail());
-        $user->setPassword(Hash::make($request->getUnhashedPassword()));
-        $user->persist();
+        $user = User::create(            [
+            'name' => $request->getName(),
+            'email' => $request->getEmail(),
+            'password' => Hash::make($request->getUnhashedPassword()),
+            'created_at' => Carbon::now()->getTimestamp(),
+            'updated_at' => Carbon::now()->getTimestamp(),
+        ]);
+
+        Pembeli::persist((new Pembeli())
+            ->setUserId($user->getId())
+            ->setAlamat($request->getAlamat())
+        );
     }
 }

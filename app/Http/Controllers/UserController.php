@@ -31,7 +31,12 @@ class UserController extends Controller
     {
         Email::validate($request->input('email'));
 
-        $request = new RegisterUserRequest($request->input('name'), $request->input('email'), $request->input('password'));
+        $request = new RegisterUserRequest(
+            $request->input('name'),
+            $request->input('email'),
+            $request->input('password'),
+            $request->input('alamat')
+        );
         use_db_transaction(fn () => $service->execute($request));
         return $this->success();
     }

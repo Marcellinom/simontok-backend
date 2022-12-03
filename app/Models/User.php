@@ -103,7 +103,6 @@ class User extends Authenticatable
     {
         $this->setSoftDeleted(false);
         $this->setRememberToken(null);
-        $this->setCreatedAt(new DateTime());
         parent::__construct();
     }
 

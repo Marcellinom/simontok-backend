@@ -7,17 +7,20 @@ class RegisterUserRequest
     private string $name;
     private string $email;
     private string $unhashed_password;
+    private string $alamat;
 
     /**
      * @param string $name
      * @param string $email
      * @param string $unhashed_password
+     * @param string $alamat
      */
-    public function __construct(string $name, string $email, string $unhashed_password)
+    public function __construct(string $name, string $email, string $unhashed_password, string $alamat)
     {
         $this->name = $name;
         $this->email = $email;
         $this->unhashed_password = $unhashed_password;
+        $this->alamat = $alamat;
     }
 
     /**
@@ -43,4 +46,13 @@ class RegisterUserRequest
     {
         return $this->unhashed_password;
     }
+
+    /**
+     * @return string
+     */
+    public function getAlamat(): string
+    {
+        return $this->alamat;
+    }
+
 }
