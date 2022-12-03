@@ -19,7 +19,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    $user = $request->user();
+    $pembeli = $request->user()->pembeli();
+    $user['pembeli_id'] = $pembeli->getId();
+    $user['alamat'] = $pembeli->getAlamat();
+    return response()->json($user);
 });
 Route::middleware(['auth:sanctum', 'must_verify_email'])->group(function () {
     Route::post('/register_marketplace', [MarketplaceController::class, 'registerMarketplace']);

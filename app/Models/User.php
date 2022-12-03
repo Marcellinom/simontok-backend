@@ -153,4 +153,10 @@ class User extends Authenticatable
         $res = $this->hasMany(Marketplace::class, 'user_id', 'id')->get();
         return $res->filter(fn ($item) => $item instanceof Marketplace);
     }
+
+    public function pembeli(): ?Pembeli
+    {
+        $res = $this->hasOne(Pembeli::class, 'user_id', 'id')->first();
+        return $res instanceof Pembeli ? $res : null;
+    }
 }
