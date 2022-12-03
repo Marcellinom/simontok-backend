@@ -1,0 +1,13 @@
+{
+    "endpoint": "/api/verify_otp",
+    "method": "POST",
+    "request": {
+        "body": {
+            "user_id": "int",
+            "otp": "int"
+        }
+    },
+    "response": {
+        "success": "true"
+    }
+}
