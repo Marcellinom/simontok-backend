@@ -34,31 +34,25 @@
                             'PUT': 'yellow',
                             'DELETE': 'red'
                         }
-
                         $('.results').append(`
                             <div id="accordion">
                                 <div class="card">
-                                    <div class="card-header" id="headingOne" data-toggle="collapse" data-target="#${data.endpoint.replace('/api/', '')}" aria-controls="collapseOne">
+                                    <div class="card-header" id="headingOne" data-toggle="collapse" data-target="#${data.endpoint.replace(/\/api\/|\?|\{|\}|&/g, '')}" aria-controls="collapseOne">
                                         <h2 class="mb-0 d-inline">
                                             <a href="#">
-                                                <h3><span style="color:${method_color[data.method]}">${data.method}</span>  ${data.endpoint}</h3>
+                                                <h3><span style="color:${method_color[data.method]}">${data.method}</span>  ${data.endpoint.replace('/api/', '')}</h3>
                                             </a>
                                         </h2>
                                     </div>
-                                    <div id="${data.endpoint.replace('/api/', '')}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                                    <div id="${data.endpoint.replace(/\/api\/|\?|\{|\}|&/g, '')}" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                                         <div class="card" data-parent="endpoint-${data.endpoint}">
                                             <div class="card-header">
+                                                <a><h2>Endpoint: </h2><h4>${data.endpoint}</h4></a>
                                                 <a><h2>Request:</h2></a>
                                                 <a>
                                                     <h4>Body:</h4>
                                                     {
-                                                        <ul>
-                                                    ${Object.keys(data.request.body ?? []).map(i => {
-                                                        return `
-                                                        <li><pre id="json">${i} : ${data.request.body[i]}</pre></li>
-                                                        `
-                                                    }).join(' ')}
-                                                        </ul>
+                                                        ${buildList(data.request.body, false)}
                                                     }
                                                 </a>
                                                 <a>
@@ -74,13 +68,7 @@
                                                 <a><h2>Response:</h2></a>
                                                 <a>
                                                     {
-                                                        <ul>
-                                                    ${Object.keys(data.response).map(i => {
-                                                        return `
-                                                        <li><pre id="json">${i} : ${data.response[i]}</pre></li>
-                                                        `
-                                                    }).join(' ')}
-                                                        </ul>
+                                                        ${buildList(data.response, false)}
                                                     }
                                                 </a>
                                                 ${data.image ? `<a><h2>Image Example:</h2></a>\
@@ -96,6 +84,26 @@
                     }
                 })
             }
+        }
+
+        function buildList(data, isSub){
+            var html = (isSub)?'<div>':''; // Wrap with div if true
+            html += '<ul>';
+            for(item in data){
+                html += '<li>';
+                if(typeof(data[item]) === 'object'){ // An array will return 'object'
+                    if (!isNaN(item)) {
+                        html += `[\n{${buildList(data[item], true)}\n]`;
+                    } else
+                        html += item + ': {' + buildList(data[item], true);
+                } else {
+                    html +=  `<pre id="json">${item} : ${data[item]}</pre>`
+                }
+                html += '</li>';
+            }
+            html += (isSub)?'}':''+'</ul>';
+            html += (isSub)?'</div>':'';
+            return html;
         }
 
     </script>
