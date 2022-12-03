@@ -1,0 +1,32 @@
+{
+    "endpoint": "/api/product?{marketplace_id}&{product_id}",
+    "method": "GET",
+    "request": {
+        "header": {
+            "Authorization": "Bearer ${token}"
+        }
+    },
+    "response": {
+        "success": "true",
+        "data": {
+            "id": "int",
+            "name": "string",
+            "unit_price": "float|int",
+            "created_at": "DateTime",
+            "stock": "float|int",
+            "movement": [
+                {
+                    "id": "string",
+                    "reference_id": "string",
+                    "user_id": "int",
+                    "product_id": "int",
+                    "direction": "enum [in, out]",
+                    "quantity": "float|int",
+                    "created_at": "DateTime"
+                }
+            ]
+        }
+    },
+    "note": "user must verify email, jika product_id null bakal fetch semua product untuk marketplace itu",
+    "image": "https://cdn.discordapp.com/attachments/677050949432377345/1048566847500455936/image.png"
+}

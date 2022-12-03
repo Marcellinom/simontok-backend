@@ -7,6 +7,8 @@
       }
     },
     "response": {
+      "success": "true",
+      "data": {
         "id": "integer",
         "pembeli_id": "integer",
         "alamat": "string",
@@ -16,5 +18,7 @@
         "soft_deleted": "bool",
         "created_at": "DateTime (Y-m-dTH:M:s)",
         "updated_at": "DateTime (Y-m-dTH:M:s)"
-    } 
+      }
+    },
+    "image": "https://cdn.discordapp.com/attachments/677050949432377345/1048567158281609336/image.png"
 }
