@@ -34,7 +34,7 @@
                             'PUT': 'yellow',
                             'DELETE': 'red'
                         }
-                        
+
                         $('.results').append(`
                             <div id="accordion">
                                 <div class="card">
@@ -83,6 +83,10 @@
                                                         </ul>
                                                     }
                                                 </a>
+                                                ${data.image ? `<a><h2>Image Example:</h2></a>\
+                                                <a><img src="${data.image}" alt="image example" width="100%"></a>` : ''}
+                                                ${data.note ? `<a><h2>Note:</h2></a>\
+                                                <a><pre id="json">${data.note}</pre></a>` : ''}
                                             </div>
                                         </div>
                                     </div>
