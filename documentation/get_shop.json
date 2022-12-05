@@ -1,5 +1,5 @@
 {
-    "endpoint": "/api/marketplace?{id}",
+    "endpoint": "/api/shop?{id}",
     "method": "GET",
     "request": {
         "header": {
@@ -17,6 +17,6 @@
             }
         ]
     },
-    "note": "user must verify email, jika id null bakal fetch semua marketplace untuk user itu",
-    "image": "https://cdn.discordapp.com/attachments/677050949432377345/1049330172882599946/image.png"
+    "note": "user must verify email, jika id null bakal fetch semua shop untuk user itu",
+    "image": "https://cdn.discordapp.com/attachments/677050949432377345/1049330097968123964/image.png"
 }

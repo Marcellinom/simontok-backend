@@ -1,10 +1,9 @@
 {
-    "endpoint": "/api/register_marketplace",
+    "endpoint": "/api/create_shop",
     "method": "POST",
     "request": {
         "body": {
-            "name": "string",
-            "shop_id": "int"
+            "name": "string"
         },
         "header": {
             "Authorization": "Bearer ${token}"

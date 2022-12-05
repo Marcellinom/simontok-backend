@@ -26,6 +26,7 @@ Route::middleware(['auth:sanctum', 'must_verify_email'])->group(function () {
     Route::post('/register_marketplace', [MarketplaceController::class, 'registerMarketplace']);
 
     Route::post('/create_shop', [ShopController::class, 'createShop']);
+    Route::get('/shop', [ShopController::class, 'getShop']);
 
     Route::post('/create_product', [ProductController::class, 'createProduct']);
     Route::post('/edit_product', [ProductController::class, 'editProduct']);
