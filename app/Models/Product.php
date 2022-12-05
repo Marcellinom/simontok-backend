@@ -44,7 +44,7 @@ class Product extends Model
 
     public const ATTRIBUTES = [
         'id' => 'int',
-        'marketplace_id' => Marketplace::ATTRIBUTES['id'],
+        'marketplace_id' => 'int',
         'name' => 'string',
         'unit_price' => 'float',
         'created_at' => DateTime::class.'|null'

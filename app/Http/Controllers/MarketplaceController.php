@@ -17,8 +17,13 @@ class MarketplaceController extends Controller
      */
     public function registerMarketplace(Request $request, RegisterMarketplaceService $service): JsonResponse
     {
-        $request = new RegisterMarketplaceRequest($request->input('name'), $request->user()->id);
-        use_db_transaction(fn () => $service->execute($request));
+        $user = $request->user();
+        $request = new RegisterMarketplaceRequest(
+            $request->input('name'),
+            $request->user()->id,
+            $request->input('shop_id')
+        );
+        use_db_transaction(fn () => $service->execute($request, $user));
         return $this->success();
     }
     public function getMarketPlace(Request $request, GetMarketplaceService $service): JsonResponse
