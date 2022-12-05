@@ -12,39 +12,24 @@ class Shop extends Model
 {
     use HasFactory, Helper;
 
-    private ?int $id;
-    private int $user_id;
-    private string $name;
-    private DateTime $created_at;
+//    private ?int $id;
+//    private int $user_id;
+//    private string $name;
+//    private DateTime $created_at;
 
-    /**
-     * @param int|null $id
-     * @param int $user_id
-     * @param string $name
-     * @param DateTime $created_at
-     */
-    public function __construct(?int $id, int $user_id, string $name, DateTime $created_at)
-    {
-        $this->id = $id;
-        $this->user_id = $user_id;
-        $this->name = $name;
-        $this->created_at = $created_at;
-        parent::__construct([
-            'id' => $id,
-            'user_id' => $user_id,
-            'name' => $name,
-            'created_at' => $created_at
-        ]);
-    }
+
+    protected $fillable = [
+        'id', 'user_id', 'name', 'created_at'
+    ];
 
     public static function persist(self $shop)
     {
-        DB::table(self::getTable())->upsert(
+        DB::table((new self())->table)->upsert(
             [
                 'id' => $shop->getId(),
                 'user_id' => $shop->getUserId(),
                 'name' => $shop->getName(),
-                'created_at' => $shop->getCreatedAt()
+                'created_at' => $shop->getCreatedAt()->getTimestamp()
             ], 'id'
         );
     }
@@ -58,9 +43,9 @@ class Shop extends Model
     public $timestamps = false;
 
     /**
-     * @return int|null
+     * @return int
      */
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

@@ -15,13 +15,13 @@ class CreateShopService
      */
     public function execute(CreateShopRequest $request, User $user)
     {
-        if (Shop::where('user_id', $user)->where('name', $request->getName())->exists())
+        if (Shop::where('user_id', $user->getId())->where('name', $request->getName())->exists())
             ExpectedException::throw("Existing shop with the same name", 2041);
-        Shop::persist(new Shop(
-            null,
-            $user->getId(),
-            $request->getName(),
-            Carbon::now()
-        ));
+        Shop::persist(new Shop([
+            'id' => null,
+            'user_id' => $user->getId(),
+            'name' => $request->getName(),
+            'created_at' => Carbon::now()
+        ]));
     }
 }
