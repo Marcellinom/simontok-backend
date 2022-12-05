@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Exceptions\ExpectedException;
+use App\Models\Shared\Helper;
 use App\Models\Shared\SimontokClassTrait;
 use DateTime;
 use Exception;
@@ -14,50 +15,27 @@ use function array_key_exists;
 use function gettype;
 use function is_numeric;
 
-/**
- * App\Models\ProductMovement
- *
- * @method static \Illuminate\Database\Eloquent\Builder|ProductMovement newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ProductMovement newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ProductMovement query()
- * @mixin \Eloquent
- * @method string getId()
- * @method self setId(string $id)
- * @method string|null getReferenceId()
- * @method self setReferenceId(string $reference_id = null)
- * @method int getUserId()
- * @method self setUserId(int $user_id)
- * @method int getProductId()
- * @method self setProductId(int $product_id)
- * @method self setDirection(int $direction)
- * @method float getQuantity()
- * @method self setQuantity(float $quantity)
- * @method DateTime|null getCreatedAt()
- * @method self setCreatedAt(DateTime $created_at = null)
- * @property int $id
- * @property string|null $reference_id
- * @property int $user_id
- * @property int $product_id
- * @property string $direction
- * @property float $quantity
- * @property \Illuminate\Support\Carbon $created_at
- * @method static \Illuminate\Database\Eloquent\Builder|ProductMovement whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductMovement whereDirection($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductMovement whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductMovement whereProductId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductMovement whereQuantity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductMovement whereReferenceId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ProductMovement whereUserId($value)
- */
 class ProductMovement extends Model
 {
-    use HasFactory, SimontokClassTrait;
+    use HasFactory, Helper;
 
     protected $table = 'product_movement';
 
     protected $primaryKey = 'id'; // or null
 
     public $incrementing = false;
+
+//    private string $id;
+//    private ?string $reference_id;
+//    private int $user_id;
+//    private int $product_id;
+//    private int $direction;
+//    private float $quantity;
+//    private DateTime $created_at;
+
+    protected $fillable = [
+        'id', 'user_id', 'product_id', 'direction', 'quantity', 'created_at'
+    ];
 
     public const DIRECTION = [
         'out' => 0,
@@ -86,8 +64,11 @@ class ProductMovement extends Model
     public function getDirection(): string
     {
         $direction_flipped = array_flip(self::DIRECTION);
-        if (is_numeric($this->direction) && gettype((int)$this->direction) != 'integer') ExpectedException::throw("invalid parsed direction type", 2030);
-        return $direction_flipped[$this->direction];
+        if (is_numeric($this->direction) && gettype((int)$this->direction) == 'integer')
+            return $direction_flipped[$this->direction];
+        if (array_key_exists($this->direction, self::DIRECTION))
+            return $this->direction;
+        ExpectedException::throw("invalid parsed direction type", 2030);
     }
 
     /**
@@ -95,32 +76,64 @@ class ProductMovement extends Model
      */
     public static function generate(int $user_id, int $product_id, string $direction, float $quantity): ProductMovement
     {
-        $product_movement = new ProductMovement();
-        $product_movement->setId(Uuid::uuid4()->toString())
-            ->setProductId($product_id)
-            ->setUserId($user_id)
-            ->setDirection(self::DIRECTION($direction))
-            ->setQuantity($quantity);
-        return $product_movement;
-    }
-
-    public const ATTRIBUTES = [
-        'id' => 'string',
-        'reference_id' => 'string|null', // nge referensiin id sebelumnya untuk menghindari race condition
-        'user_id' => User::ATTRIBUTES['id'],
-        'product_id' => Product::ATTRIBUTES['id'],
-        'direction' => 'int',
-        'quantity' => 'float',
-        'created_at' => DateTime::class.'|null'
-    ];
-
-    public function __construct()
-    {
-        $this->setCreatedAt(new DateTime());
-        parent::__construct();
+        return new ProductMovement([
+            'id' => Uuid::uuid4()->toString(),
+            'product_id' => $product_id,
+            'user_id' => $user_id,
+            'direction' => $direction,
+            'quantity' => $quantity,
+        ]);
     }
 
     protected $casts = [
         'created_at' => 'datetime'
     ];
+
+    /**
+     * @return string
+     */
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getReferenceId(): ?string
+    {
+        return $this->reference_id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUserId(): int
+    {
+        return $this->user_id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getProductId(): int
+    {
+        return $this->product_id;
+    }
+
+    /**
+     * @return float
+     */
+    public function getQuantity(): float
+    {
+        return $this->quantity;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getCreatedAt(): DateTime
+    {
+        return $this->created_at;
+    }
 }

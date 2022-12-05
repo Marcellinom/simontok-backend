@@ -42,6 +42,12 @@ class Shop extends Model
 
     public $timestamps = false;
 
+    public function user(): Model|User|null
+    {
+        $res = $this->belongsTo(User::class, 'user_id', 'id')->first();
+        return $res instanceof User ? $res : null;
+    }
+
     /**
      * @return int|null
      */

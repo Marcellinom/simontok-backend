@@ -53,6 +53,20 @@ class Marketplace extends Model
     }
 
     /**
+     * @return Shop|null
+     */
+    public function shop(): Shop|null
+    {
+        $res = $this->belongsTo(Shop::class, 'shop_id', 'id')->first();
+        return $res instanceof Shop ? $res : null;
+    }
+
+    public function user(): User|null
+    {
+        return $this->shop()->user();
+    }
+
+    /**
      * @return int|null
      */
     public function getId(): ?int

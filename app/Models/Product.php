@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Shared\Helper;
 use App\Models\Shared\SimontokClassTrait;
 use DateTime;
 use DB;
@@ -9,63 +10,31 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * App\Models\Product
- *
- * @method static \Illuminate\Database\Eloquent\Builder|Product newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Product newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Product query()
- * @mixin \Eloquent
- * @property int $id
- * @property int $marketplace_id
- * @property string $name
- * @property float $unit_price
- * @property \Illuminate\Support\Carbon $created_at
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereMarketplaceId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereUnitPrice($value)
- * @method int getId()
- * @method self setId(int $id)
- * @method int getMarketplaceId()
- * @method self setMarketplaceId(int $marketplace_id)
- * @method string getName()
- * @method self setName(string $name)
- * @method float getUnitPrice()
- * @method self setUnitPrice(float $unit_price)
- * @method DateTime|null getCreatedAt()
- * @method self setCreatedAt(DateTime $created_at = null)
- */
 class Product extends Model
 {
-    use HasFactory, SimontokClassTrait;
+    use HasFactory, Helper;
 
     protected $table = 'product';
 
-    public const ATTRIBUTES = [
-        'id' => 'int',
-        'marketplace_id' => 'int',
-        'name' => 'string',
-        'unit_price' => 'float',
-        'created_at' => DateTime::class.'|null'
+//    private ?int $id;
+//    private int $marketplace_id;
+//    private string $name;
+//    private float $unit_price;
+//    private DateTime $created_at;
+
+    protected $fillable = [
+        'id', 'marketplace_id', 'name', 'unit_price', 'created_at'
     ];
 
-    public function persist()
+    public static function persist(self $product)
     {
-        DB::table('product')->upsert([
-            'id' => $this->getId(),
-            'marketplace_id' => $this->getMarketplaceId(),
-            'name' => $this->getName(),
-            'unit_price' => $this->getUnitPrice(),
-            'created_at' => $this->getCreatedAt() ? $this->getCreatedAt()->getTimestamp() : null,
+        DB::table($product->table)->upsert([
+            'id' => $product->getId(),
+            'marketplace_id' => $product->getMarketplaceId(),
+            'name' => $product->getName(),
+            'unit_price' => $product->getUnitPrice(),
+            'created_at' => $product->getCreatedAt()->getTimestamp(),
         ], 'id');
-    }
-
-    public function __construct()
-    {
-        $this->setCreatedAt(new DateTime());
-        parent::__construct();
     }
 
     public function marketplace(): ?Marketplace
@@ -87,4 +56,60 @@ class Product extends Model
     protected $casts = [
         'created_at' => 'datetime'
     ];
+
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @param float $unit_price
+     */
+    public function setUnitPrice(float $unit_price): void
+    {
+        $this->unit_price = $unit_price;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMarketplaceId(): int
+    {
+        return $this->marketplace_id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return float
+     */
+    public function getUnitPrice(): float
+    {
+        return $this->unit_price;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getCreatedAt(): DateTime
+    {
+        return $this->created_at;
+    }
 }

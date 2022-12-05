@@ -40,13 +40,16 @@ class AddProductMovementJobs implements ShouldQueue
         $this->quantity = $quantity;
     }
 
+    /**
+     * @throws Exception
+     */
     public static function publish(ProductMovement $product_movement)
     {
         self::dispatch(
             $product_movement->getId(),
             $product_movement->getUserId(),
             $product_movement->getProductId(),
-            $product_movement->getDirection(),
+            ProductMovement::DIRECTION($product_movement->getDirection()),
             $product_movement->getQuantity()
         );
     }

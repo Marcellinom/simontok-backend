@@ -19,8 +19,7 @@
                     {
                         "id": "string",
                         "reference_id": "string",
-                        "user_id": "int",
-                        "product_id": "int",
+                        "actor_user_id": "int",
                         "direction": "enum [in, out]",
                         "quantity": "float|int",
                         "created_at": "DateTime"

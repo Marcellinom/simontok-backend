@@ -39,7 +39,16 @@ class GetProductService
                 'unit_price' => $product->getUnitPrice(),
                 'created_at' => $product->getCreatedAt(),
                 'stock' => $stock,
-                'movement' => $product_movement->each(fn (ProductMovement $product_movement) => $product_movement->setDirection(($product_movement->getDirection())))
+                'movement' => $product_movement->map(function (ProductMovement $movement) {
+                    return [
+                        'id' => $movement->getId(),
+                        'reference_id' => $movement->getReferenceId(),
+                        'actor_user_id' => $movement->getUserId(),
+                        'direction' => $movement->getDirection(),
+                        'quantity' => $movement->getQuantity(),
+                        'created_at' => $movement->getCreatedAt()
+                    ];
+                })
             ]);
         });
     }

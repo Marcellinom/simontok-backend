@@ -22,7 +22,7 @@ class EditProductService
 
         $product->setName($request->getName() ?? $product->getName());
         $product->setUnitPrice($request->getUnitPrice() ?? $product->getUnitPrice());
-        $product->persist();
+        Product::persist($product);
 
         if ($request->getNewProductMovement()) {
             $product_movement = ProductMovement::generate(

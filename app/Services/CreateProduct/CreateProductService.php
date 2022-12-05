@@ -6,6 +6,7 @@ use App\Exceptions\ExpectedException;
 use App\Models\Marketplace;
 use App\Models\Product;
 use App\Models\User;
+use Carbon\Carbon;
 use Exception;
 
 class CreateProductService
@@ -17,16 +18,21 @@ class CreateProductService
     {
         $marketplace = Marketplace::where('id', $request->getMarketplaceId())->first();
 
-        if (!$marketplace) ExpectedException::throw("Marketplace not found", 2024);
+        if (!$marketplace)
+            ExpectedException::throw("Marketplace not found", 2024);
 
-        if ($user->getId() !== $marketplace->getUserId()) ExpectedException::throw("Marketplace is not owned by user", 2025);
+        if ($user->getId() !== $marketplace->user()?->getId())
+            ExpectedException::throw("Marketplace is not owned by user", 2025);
 
-        if (Product::where('name', $request->getName())->exists()) ExpectedException::throw("product with the name {$request->getName()} already exists", 2026);
+        if (Product::where('name', $request->getName())->exists())
+            ExpectedException::throw("product with the name {$request->getName()} already exists", 2026);
 
-        $product = (new Product())
-            ->setMarketplaceId($marketplace->getId())
-            ->setName($request->getName())
-            ->setUnitPrice($request->getUnitPrice());
-        $product->persist();
+        Product::persist(new Product([
+            'id' => null,
+            'marketplace_id' => $request->getMarketplaceId(),
+            'name' => $request->getName(),
+            'unit_price' => $request->getUnitPrice(),
+            'created_at' => Carbon::now(),
+        ]));
     }
 }
