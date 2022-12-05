@@ -32,6 +32,20 @@ use function array_key_exists;
  * @method self setQuantity(float $quantity)
  * @method DateTime|null getCreatedAt()
  * @method self setCreatedAt(DateTime $created_at = null)
+ * @property int $id
+ * @property string|null $reference_id
+ * @property int $user_id
+ * @property int $product_id
+ * @property string $direction
+ * @property float $quantity
+ * @property \Illuminate\Support\Carbon $created_at
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductMovement whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductMovement whereDirection($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductMovement whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductMovement whereProductId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductMovement whereQuantity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductMovement whereReferenceId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ProductMovement whereUserId($value)
  */
 class ProductMovement extends Model
 {

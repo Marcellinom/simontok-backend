@@ -27,8 +27,8 @@ use Illuminate\Queue\SerializesModels;
  * @method static \Illuminate\Database\Eloquent\Builder|Marketplace whereUserId($value)
  * @method int getId()
  * @method self setId(int $id)
- * @method int getUserId()
- * @method self setUserId(int $user_id)
+ * @method int getShopId()
+ * @method self setShopId(int $shop_id)
  * @method string getName()
  * @method self setName(string $name)
  * @method DateTime|null getCreatedAt()
@@ -42,7 +42,7 @@ class Marketplace extends Model
 
     public const ATTRIBUTES = [
         'id' => 'int',
-        'user_id' => User::ATTRIBUTES['id'],
+        'shop_id' => 'int',
         'name' => 'string',
         'created_at' => DateTime::class.'|null',
     ];
@@ -52,7 +52,7 @@ class Marketplace extends Model
         DB::table($this->table)->upsert(
             [
                 'id' => $this->getId(),
-                'user_id' => $this->getUserId(),
+                'shop_id' => $this->getUserId(),
                 'name' => $this->getName(),
                 'created_at' => $this->getCreatedAt() ? $this->getCreatedAt()->getTimestamp() : null,
             ], 'id'
@@ -67,12 +67,6 @@ class Marketplace extends Model
     {
         $this->setCreatedAt(new DateTime());
         parent::__construct();
-    }
-
-    public function user(): User|null
-    {
-        $res = $this->belongsTo(User::class, 'id', 'user_id')->first();
-        return $res instanceof User ? $res : null;
     }
 
     /**

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\MarketplaceController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ShopController;
 use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -23,6 +24,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::middleware(['auth:sanctum', 'must_verify_email'])->group(function () {
     Route::post('/register_marketplace', [MarketplaceController::class, 'registerMarketplace']);
+
+    Route::post('/create_shop', [ShopController::class, 'createShop']);
 
     Route::post('/create_product', [ProductController::class, 'createProduct']);
     Route::post('/edit_product', [ProductController::class, 'editProduct']);

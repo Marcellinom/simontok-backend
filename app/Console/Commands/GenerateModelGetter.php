@@ -8,7 +8,9 @@ use File;
 use Illuminate\Console\Command;
 use ReflectionClass;
 use function app_path;
+use function array_keys;
 use function explode;
+use function in_array;
 use function preg_replace;
 use function scandir;
 use function str_replace;
@@ -45,6 +47,9 @@ class GenerateModelGetter extends Command
         foreach (scandir(app_path('Models')) as $class) {
             if ($class === '.' || $class === '..' || $class === 'Shared') continue;
             $reflection_class = new ReflectionClass($class_name = substr('App\\Models\\'.$class, 0, -4));
+
+            if (!in_array('App\Models\Shared\SimontokClassTrait', array_keys($reflection_class->getTraits()))) continue;
+
             $php_docs = new DocBlock($reflection_class, new DocBlock\Context($reflection_class->getNamespaceName()));
 
             // loop untuk menghapus getter dan setter lama
