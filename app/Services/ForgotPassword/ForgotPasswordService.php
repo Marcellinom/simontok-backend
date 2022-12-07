@@ -45,7 +45,8 @@ class ForgotPasswordService
             (new Mailable())->from(config('mail.from'))
                 ->subject('Forgot Password')
                 ->markdown('forgot_password', [
-                    'token' => $token
+                    'token' => $token,
+                    'name' => $user->getName()
                 ])
         );
     }

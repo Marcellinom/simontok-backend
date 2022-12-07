@@ -13,7 +13,7 @@
                 <tr>
                     <td colspan="2" align="center" style="padding: 50px 50px 0px 50px;">
                         <h1 style="padding-right: 0em; margin: 0; line-height: 40px; font-weight:300; font-family: 'Nunito Sans', Arial, Verdana, Helvetica, sans-serif; color: #666; text-align: left; padding-bottom: 1em;">
-                            {{$otp}}
+                            Lupa Password?
                         </h1>
                     </td>
                 </tr>
@@ -23,10 +23,7 @@
                             Hi {{$name}},
                         </p>
                         <p style="font-size: 18px; margin: 0; line-height: 24px; font-family: 'Nunito Sans', Arial, Verdana, Helvetica, sans-serif; color: #666; text-align: left; padding-bottom: 3%;">
-                            Please use this one time password {{$otp}} to sign in to your application
-                        </p>
-                        <p style="font-size: 18px; margin: 0; line-height: 24px; font-family: 'Nunito Sans', Arial, Verdana, Helvetica, sans-serif; color: #666; text-align: left; padding-bottom: 3%;">
-                            ...Or click this link instead <a href="{{config('app.fe_domain')}}/api?user_id={{$user_id}}&otp={{$otp}}">{{config('app.fe_domain')}}/api?user_id={{$user_id}}&otp={{$otp}}</a>
+                            Please change your password here <a href="{{config('app.fe_domain')}}/lupa_password?token={{$token}}">{{config('app.fe_domain')}}/lupa_password?token={{$token}}</a>
                         </p>
                     </td>
                 </tr>
