@@ -212,4 +212,5 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 
+    'fe_domain' => env('FE_DOMAIN')
 ];

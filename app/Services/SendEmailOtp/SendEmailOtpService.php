@@ -21,6 +21,6 @@ class SendEmailOtpService
         $otp = Otp::generateForUser($user);
         $otp->persist();
 
-        Mail::to($user->getEmail())->send($otp->build());
+        Mail::to($user->getEmail())->send($otp->build($user->getName()));
     }
 }

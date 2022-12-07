@@ -9,7 +9,12 @@
         }
     },
     "response": {
-        "success": "true"
+        "success": "true",
+        "data": [
+            {
+                "user_id": "int"
+            }
+        ]
     },
     "note": "saat user di create, bakalan sekaligus nge create Pembeli buat user itu"
 }

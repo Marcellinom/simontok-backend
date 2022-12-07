@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Shared\Email;
+use App\Models\Shared\JsonSerialize;
 use App\Services\EditUser\EditUserRequest;
 use App\Services\EditUser\EditUserService;
 use App\Services\ForgotPassword\ForgotPasswordRequest;
@@ -34,8 +35,8 @@ class UserController extends Controller
         Email::validate($request->input('email'));
 
         $request = new RegisterUserRequest($request->input('name'), $request->input('email'), $request->input('password'));
-        use_db_transaction(fn () => $service->execute($request));
-        return $this->success();
+        $res = use_db_transaction(fn () => $service->execute($request));
+        return $this->successWithData(JsonSerialize::make(['user_id' => $res]));
     }
 
     /**

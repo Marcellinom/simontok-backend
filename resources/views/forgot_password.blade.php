@@ -1,89 +1,55 @@
 <!DOCTYPE html>
 <html>
-<head>
 
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Email Verification</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style type="text/css">
-        /**
-         * Google webfonts. Recommended to include the .woff version for cross-client compatibility.
-         */
-        @media screen {
-            @font-face {
-                font-family: 'Source Sans Pro';
-                font-style: normal;
-                font-weight: 400;
-                src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'), url(https://fonts.gstatic.com/s/sourcesanspro/v10/ODelI1aHBYDBqgeIAH2zlBM0YzuT7MdOe03otPbuUS0.woff) format('woff');
-            }
+<table align="center" cellpadding="0" cellspacing="0" border="0" width="100%"bgcolor="#f0f0f0">
+    <tr>
+        <td style="padding: 30px 30px 20px 30px;">
+            <table cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#ffffff" style="max-width: 650px; margin: auto;">
+                <tr>
+                    <td colspan="2" align="center" style="background-color: #333; padding: 40px;">
+                        <a href="http://wso2.com/" target="_blank"><img src="http://cdn.wso2.com/wso2/newsletter/images/nl-2017/wso2-logo-transparent.png" border="0" /></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center" style="padding: 50px 50px 0px 50px;">
+                        <h1 style="padding-right: 0em; margin: 0; line-height: 40px; font-weight:300; font-family: 'Nunito Sans', Arial, Verdana, Helvetica, sans-serif; color: #666; text-align: left; padding-bottom: 1em;">
+                            {{$otp}}
+                        </h1>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: left; padding: 0px 50px;" valign="top">
+                        <p style="font-size: 18px; margin: 0; line-height: 24px; font-family: 'Nunito Sans', Arial, Verdana, Helvetica, sans-serif; color: #666; text-align: left; padding-bottom: 3%;">
+                            Hi {{$name}},
+                        </p>
+                        <p style="font-size: 18px; margin: 0; line-height: 24px; font-family: 'Nunito Sans', Arial, Verdana, Helvetica, sans-serif; color: #666; text-align: left; padding-bottom: 3%;">
+                            Please use this one time password {{$otp}} to sign in to your application
+                        </p>
+                        <p style="font-size: 18px; margin: 0; line-height: 24px; font-family: 'Nunito Sans', Arial, Verdana, Helvetica, sans-serif; color: #666; text-align: left; padding-bottom: 3%;">
+                            ...Or click this link instead <a href="{{config('app.fe_domain')}}/api?user_id={{$user_id}}&otp={{$otp}}">{{config('app.fe_domain')}}/api?user_id={{$user_id}}&otp={{$otp}}</a>
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: left; padding: 30px 50px 50px 50px" valign="top">
+                        <p style="font-size: 18px; margin: 0; line-height: 24px; font-family: 'Nunito Sans', Arial, Verdana, Helvetica, sans-serif; color: #505050; text-align: left;">
+                            Thanks,<br/>Simontok Team
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center" style="padding: 20px 40px 40px 40px;" bgcolor="#f0f0f0">
+                        <p style="font-size: 12px; margin: 0; line-height: 24px; font-family: 'Nunito Sans', Arial, Verdana, Helvetica, sans-serif; color: #777;">
+                            &copy; 2022
+                            <a href="http://wso2.com/" target="_blank" style="color: #777; text-decoration: none">Simontok</a>
+                            <br>
+                            Departemen Teknik Informatika ITS
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
 
-            @font-face {
-                font-family: 'Source Sans Pro';
-                font-style: normal;
-                font-weight: 700;
-                src: local('Source Sans Pro Bold'), local('SourceSansPro-Bold'), url(https://fonts.gstatic.com/s/sourcesanspro/v10/toadOcfmlt9b38dHJxOBGFkQc6VGVFSmCnC_l7QZG60.woff) format('woff');
-            }
-        }
-
-        body,
-        table,
-        td,
-        a {
-            -ms-text-size-adjust: 100%; /* 1 */
-            -webkit-text-size-adjust: 100%; /* 2 */
-        }
-
-        table,
-        td {
-            mso-table-rspace: 0pt;
-            mso-table-lspace: 0pt;
-        }
-
-        img {
-            -ms-interpolation-mode: bicubic;
-        }
-
-        a[x-apple-data-detectors] {
-            font-family: inherit !important;
-            font-size: inherit !important;
-            font-weight: inherit !important;
-            line-height: inherit !important;
-            color: inherit !important;
-            text-decoration: none !important;
-        }
-
-        div[style*="margin: 16px 0;"] {
-            margin: 0 !important;
-        }
-
-        body {
-            width: 100% !important;
-            height: 100% !important;
-            padding: 0 !important;
-            margin: 0 !important;
-        }
-
-
-        table {
-            border-collapse: collapse !important;
-        }
-
-        a {
-            color: #1a82e2;
-        }
-
-        img {
-            height: auto;
-            line-height: 100%;
-            text-decoration: none;
-            border: 0;
-            outline: none;
-        }
-    </style>
-
-</head>
-<body style="background-color: #e9ecef;">
-{{$token}}
-</body>
 </html>

@@ -81,13 +81,14 @@ class Otp extends Model
         parent::__construct();
     }
 
-    public function build(): Mailable
+    public function build(string $name): Mailable
     {
         return $this->mailable->from(config('mail.from'))
             ->subject('Email OTP Confirmation')
             ->markdown('email_otp', [
                 'otp' => $this->getOtp(),
-                'user_id' => $this->getUserId()
+                'user_id' => $this->getUserId(),
+                'name' => $name
             ]);
     }
 

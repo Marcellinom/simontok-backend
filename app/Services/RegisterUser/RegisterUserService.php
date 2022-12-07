@@ -34,6 +34,7 @@ class RegisterUserService
         $user->setPassword(Hash::make($request->getUnhashedPassword()));
         $user->setImage('user/default.png');
         $user->persist();
-        $this->otp_service->execute(new SendEmailOtpRequest($user->getEmail()));
+        $user = $this->otp_service->execute(new SendEmailOtpRequest($user->getEmail()));
+        return $user->getId();
     }
 }
