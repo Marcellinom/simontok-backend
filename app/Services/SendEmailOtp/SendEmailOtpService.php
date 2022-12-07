@@ -22,5 +22,7 @@ class SendEmailOtpService
         $otp->persist();
 
         Mail::to($user->getEmail())->send($otp->build($user->getName()));
+
+        return $user;
     }
 }
