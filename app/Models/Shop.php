@@ -15,11 +15,12 @@ class Shop extends Model
 //    private ?int $id;
 //    private int $user_id;
 //    private string $name;
+//    private string $image;
 //    private DateTime $created_at;
 
 
     protected $fillable = [
-        'id', 'user_id', 'name', 'created_at'
+        'id', 'user_id', 'name', 'created_at', 'image'
     ];
 
     public static function persist(self $shop)
@@ -29,6 +30,7 @@ class Shop extends Model
                 'id' => $shop->getId(),
                 'user_id' => $shop->getUserId(),
                 'name' => $shop->getName(),
+                'image' => $shop->getImage(),
                 'created_at' => $shop->getCreatedAt()->getTimestamp()
             ], 'id'
         );
@@ -78,5 +80,13 @@ class Shop extends Model
     public function getCreatedAt(): DateTime
     {
         return $this->created_at;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImage(): string
+    {
+        return $this->image;
     }
 }

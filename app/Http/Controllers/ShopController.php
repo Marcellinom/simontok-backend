@@ -18,7 +18,11 @@ class ShopController extends Controller
      */
     public function createShop(Request $request, CreateShopService $service): JsonResponse
     {
-        use_db_transaction(fn () => $service->execute(new CreateShopRequest($request->input('name')), $request->user()));
+        use_db_transaction(fn () => $service->execute(
+            new CreateShopRequest(
+                $request->input('name'),
+                $request->hasFile('image') ? $request->file('image') : null
+            ), $request->user()));
         return $this->success();
     }
 

@@ -7,6 +7,8 @@ use App\Models\Shop;
 use App\Models\User;
 use Carbon\Carbon;
 use Exception;
+use Ramsey\Uuid\Uuid;
+use Storage;
 
 class CreateShopService
 {
@@ -17,11 +19,17 @@ class CreateShopService
     {
         if (Shop::where('user_id', $user->getId())->where('name', $request->getName())->exists())
             ExpectedException::throw("Existing shop with the same name", 2041);
+
+        $id = 'shop/default.png';
+        if ($request->getImage()) {
+            $id = Storage::disk('public')->put("shop/", $request->getImage());
+        }
         Shop::persist(new Shop([
             'id' => null,
             'user_id' => $user->getId(),
             'name' => $request->getName(),
-            'created_at' => Carbon::now()
+            'created_at' => Carbon::now(),
+            'image' => $id
         ]));
     }
 }
