@@ -20,10 +20,12 @@ class Product extends Model
 //    private int $marketplace_id;
 //    private string $name;
 //    private float $unit_price;
+//    private string $image;
+//    private string $category;
 //    private DateTime $created_at;
 
     protected $fillable = [
-        'id', 'marketplace_id', 'name', 'unit_price', 'created_at'
+        'id', 'marketplace_id', 'name', 'unit_price', 'created_at', 'image', 'category'
     ];
 
     public static function persist(self $product)
@@ -34,6 +36,8 @@ class Product extends Model
             'name' => $product->getName(),
             'unit_price' => $product->getUnitPrice(),
             'created_at' => $product->getCreatedAt()->getTimestamp(),
+            'image' => $product->getImage(),
+            'category' => $product->getCategory()
         ], 'id');
     }
 
@@ -111,5 +115,21 @@ class Product extends Model
     public function getCreatedAt(): DateTime
     {
         return $this->created_at;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImage(): string
+    {
+        return $this->image;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCategory(): string
+    {
+        return $this->category;
     }
 }

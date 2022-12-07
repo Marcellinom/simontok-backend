@@ -25,7 +25,9 @@ class ProductController extends Controller
             new CreateProductRequest(
                 $request->input('marketplace_id'),
                 $request->input('name'),
-                (float)$request->input('unit_price')
+                (float)$request->input('unit_price'),
+                $request->input('category'),
+                $request->hasFile('image') ? $request->file('image') : null
             ),
             $request->user()
         ));
