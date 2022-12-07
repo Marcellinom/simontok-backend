@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Shared\Email;
+use App\Services\EditUser\EditUserRequest;
+use App\Services\EditUser\EditUserService;
 use App\Services\ForgotPassword\ForgotPasswordRequest;
 use App\Services\ForgotPassword\ForgotPasswordService;
 use App\Services\GetMarketplace\GetMarketplaceRequest;
@@ -92,6 +94,19 @@ class UserController extends Controller
     {
         $request = new VerifyOtpRequest($request->input('user_id'), $request->input('otp'));
         use_db_transaction(fn () => $service->execute($request));
+        return $this->success();
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function editUser(Request $request, EditUserService $service): JsonResponse
+    {
+        use_db_transaction(fn () => $service->execute(new EditUserRequest(
+            $request->input('name'),
+            $request->input('new_password'),
+            $request->hasFile('image') ? $request->file('image') : null
+        ), $request->user()));
         return $this->success();
     }
 }

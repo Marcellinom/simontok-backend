@@ -61,6 +61,8 @@ use function every_array;
  * @method self setUpdatedAt(DateTime $updated_at = null)
  * @method DateTime|null getEmailVerifiedAt()
  * @method self setEmailVerifiedAt(DateTime $email_verified_at = null)
+ * @method string getImage()
+ * @method self setImage(string $image)
  */
 class User extends Authenticatable
 {
@@ -82,6 +84,7 @@ class User extends Authenticatable
                 'soft_deleted' => $this->isSoftDeleted(),
                 'created_at' => $this->getCreatedAt() ? $this->getCreatedAt()->getTimestamp() : null,
                 'updated_at' => (new DateTime())->getTimestamp(),
+                'image' => $this->getImage(),
                 'email_verified_at' => $this->getEmailVerifiedAt() ? $this->getEmailVerifiedAt()->getTimestamp() : null
             ],
             'id'
@@ -127,7 +130,8 @@ class User extends Authenticatable
         'soft_deleted' => 'bool|false',
         'created_at' => DateTime::class.'|null',
         'updated_at' => DateTime::class.'|null',
-        'email_verified_at' => DateTime::class.'|null'
+        'email_verified_at' => DateTime::class.'|null',
+        'image' => 'string'
     ];
 
     /**

@@ -23,6 +23,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::middleware(['auth:sanctum', 'must_verify_email'])->group(function () {
+    Route::post('/edit_user', [UserController::class, 'editUser']);
+
     Route::post('/register_marketplace', [MarketplaceController::class, 'registerMarketplace']);
 
     Route::post('/create_shop', [ShopController::class, 'createShop']);

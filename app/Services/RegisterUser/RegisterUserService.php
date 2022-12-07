@@ -20,6 +20,7 @@ class RegisterUserService
         $user->setName($request->getName());
         $user->setEmail($request->getEmail());
         $user->setPassword(Hash::make($request->getUnhashedPassword()));
+        $user->setImage('user/default.png');
         $user->persist();
     }
 }
