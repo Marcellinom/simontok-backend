@@ -14,6 +14,7 @@
                 "name": "string",
                 "unit_price": "float|int",
                 "created_at": "DateTime",
+                "image": "string",
                 "stock": "float|int",
                 "movement": [
                     {

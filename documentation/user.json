@@ -15,7 +15,8 @@
         "email_verified_at": "DateTime (Y-m-dTH:M:s) | null",
         "soft_deleted": "bool",
         "created_at": "DateTime (Y-m-dTH:M:s)",
-        "updated_at": "DateTime (Y-m-dTH:M:s)"
+        "updated_at": "DateTime (Y-m-dTH:M:s)",
+        "image": "string"
     },
     "image": "https://cdn.discordapp.com/attachments/677050949432377345/1048567158281609336/image.png"
 }

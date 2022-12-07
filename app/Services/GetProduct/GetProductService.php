@@ -27,6 +27,7 @@ class GetProductService
                 'name' => $product->getName(),
                 'unit_price' => $product->getUnitPrice(),
                 'created_at' => $product->getCreatedAt(),
+                'image' => $product->getImage(),
                 'stock' => $stock,
                 'movement' => $product_movement
             ]);
@@ -38,6 +39,7 @@ class GetProductService
                 'name' => $product->getName(),
                 'unit_price' => $product->getUnitPrice(),
                 'created_at' => $product->getCreatedAt(),
+                'image' => $product->getImage(),
                 'stock' => $stock,
                 'movement' => $product_movement->map(function (ProductMovement $movement) {
                     return [

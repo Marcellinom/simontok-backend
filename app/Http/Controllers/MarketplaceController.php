@@ -29,7 +29,7 @@ class MarketplaceController extends Controller
     public function getMarketPlace(Request $request, GetMarketplaceService $service): JsonResponse
     {
         return $this->successWithData(
-            $service->execute(new GetMarketplaceRequest($request->query('id')), $request->user())
+            $service->execute(new GetMarketplaceRequest($request->query('shop_id'), $request->query('id')), $request->user())
         );
     }
 }

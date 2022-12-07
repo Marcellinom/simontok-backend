@@ -9,7 +9,7 @@ class GetShopService
 {
     public function execute(GetShopRequest $request, User $user)
     {
-        if (!$request->getShopId()) return Shop::where('user_id', $user->getId())->first();
+        if (!$request->getShopId()) return Shop::where('user_id', $user->getId())->get();
         return Shop::where('user_id', $user->getId())->where('id', $request->getShopId())->first();
     }
 }
