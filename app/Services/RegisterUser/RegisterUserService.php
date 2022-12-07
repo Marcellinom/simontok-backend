@@ -4,10 +4,22 @@ namespace App\Services\RegisterUser;
 
 use App\Exceptions\ExpectedException;
 use App\Models\User;
+use App\Services\SendEmailOtp\SendEmailOtpRequest;
+use App\Services\SendEmailOtp\SendEmailOtpService;
 use Hash;
 
 class RegisterUserService
 {
+    private SendEmailOtpService $otp_service;
+
+    /**
+     * @param SendEmailOtpService $otp_service
+     */
+    public function __construct(SendEmailOtpService $otp_service)
+    {
+        $this->otp_service = $otp_service;
+    }
+
     /**
      * @throws \Exception
      */
@@ -22,5 +34,6 @@ class RegisterUserService
         $user->setPassword(Hash::make($request->getUnhashedPassword()));
         $user->setImage('user/default.png');
         $user->persist();
+        $this->otp_service->execute(new SendEmailOtpRequest($user->getEmail()));
     }
 }
