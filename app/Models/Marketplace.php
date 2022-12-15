@@ -44,15 +44,6 @@ class Marketplace extends Model
     ];
 
     /**
-     * @return Collection<Product>
-     */
-    public function products(): Collection
-    {
-        $res = $this->hasMany(Product::class, 'marketplace_id', 'id')->get();
-        return $res->filter(fn ($product) => $product instanceof Product);
-    }
-
-    /**
      * @return Shop|null
      */
     public function shop(): Shop|null

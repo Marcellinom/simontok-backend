@@ -3,6 +3,7 @@
 use App\Http\Controllers\MarketplaceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -38,6 +39,8 @@ Route::middleware(['auth:sanctum', 'must_verify_email'])->group(function () {
     Route::get('/product', [ProductController::class, 'getProduct']);
 
     Route::get('marketplace', [MarketplaceController::class, 'getMarketPlace']);
+
+    Route::post('/create_transaction', [TransactionController::class, 'createTransaction']);
 });
 Route::post('/reset_password', [UserController::class, 'reset_password']);
 Route::post('/register_user', [UserController::class, 'register']);

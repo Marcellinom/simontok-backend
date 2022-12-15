@@ -28,7 +28,7 @@ class ProductController extends Controller
     {
         use_db_transaction(fn () => $service->execute(
             new CreateProductRequest(
-                $request->input('marketplace_id'),
+                $request->input('shop_id'),
                 $request->input('name'),
                 (float)$request->input('unit_price'),
                 $request->input('category_id'),
@@ -63,7 +63,7 @@ class ProductController extends Controller
     {
         return $this->successWithData(
             $service->execute(new GetProductRequest(
-                $request->query('marketplace_id'),
+                $request->query('shop_id'),
                 $request->query('product_id')
             ))
         );

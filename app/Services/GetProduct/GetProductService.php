@@ -2,12 +2,12 @@
 
 namespace App\Services\GetProduct;
 
-
 use App\Models\Marketplace;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductMovement;
 use App\Models\Shared\JsonSerialize;
+use App\Models\Shop;
 use Exception;
 use Illuminate\Support\Collection;
 use function count;
@@ -20,23 +20,23 @@ class GetProductService
     public function execute(GetProductRequest $request)
     {
         if ($request->getProductId()) {
-            $product =  Product::where('marketplace_id', $request->getMarketplaceId())
+            $product =  Product::where('shop_id', $request->getShopId())
                 ->where('id', $request->getProductId())->first();
             $stock = $this->countStock($product_movement = $product->productMovement());
             return $this->serialize($this->buildResponse($product, $stock, $product_movement));
         }
-        return Marketplace::where('id', $request->getMarketplaceId())->first()?->products()->map(function (Product $product) {
+        return Shop::where('id', $request->getShopId())->first()?->products()->map(function (Product $product) {
             $stock = $this->countStock($product_movement = $product->productMovement());
             return $this->serialize($this->buildResponse($product, $stock, $product_movement->map(function (ProductMovement $movement) {
-                    return [
-                        'id' => $movement->getId(),
-                        'reference_id' => $movement->getReferenceId(),
-                        'actor_user_id' => $movement->getUserId(),
-                        'direction' => $movement->getDirection(),
-                        'quantity' => $movement->getQuantity(),
-                        'created_at' => $movement->getCreatedAt()
-                    ];
-                })
+                return [
+                    'id' => $movement->getId(),
+                    'reference_id' => $movement->getReferenceId(),
+                    'actor_user_id' => $movement->getUserId(),
+                    'direction' => $movement->getDirection(),
+                    'quantity' => $movement->getQuantity(),
+                    'created_at' => $movement->getCreatedAt()
+                ];
+            })
             ));
         });
     }

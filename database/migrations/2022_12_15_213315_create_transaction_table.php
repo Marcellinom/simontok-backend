@@ -13,14 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('product', function (Blueprint $table) {
+        Schema::create('transaction', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('shop_id');
-            $table->string('name');
-            $table->float('unit_price');
+            $table->unsignedBigInteger('marketplace_id');
+            $table->unsignedBigInteger('user_id');
+            $table->float('total_price');
             $table->bigInteger('created_at');
 
-            $table->foreign('shop_id')->references('id')->on('shop');
+            $table->foreign('marketplace_id')->references('id')->on('marketplace');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -31,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product');
+        Schema::dropIfExists('transaction');
     }
 };

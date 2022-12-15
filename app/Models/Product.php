@@ -19,33 +19,39 @@ class Product extends Model
     public $timestamps = false;
 
 //    private ?int $id;
-//    private int $marketplace_id;
 //    private string $name;
 //    private float $unit_price;
 //    private string $image;
 //    private string $category;
 //    private DateTime $created_at;
+    /**
+     * @return int
+     */
+    public function getShopId(): int
+    {
+        return $this->shop_id;
+    }
 
     protected $fillable = [
-        'id', 'marketplace_id', 'name', 'unit_price', 'created_at', 'image', 'category'
+        'id', 'name', 'unit_price', 'created_at', 'image', 'category', 'shop_id'
     ];
 
     public static function persist(self $product)
     {
         DB::table($product->table)->upsert([
             'id' => $product->getId(),
-            'marketplace_id' => $product->getMarketplaceId(),
             'name' => $product->getName(),
             'unit_price' => $product->getUnitPrice(),
             'created_at' => $product->getCreatedAt()->getTimestamp(),
-            'image' => $product->getImage()
+            'image' => $product->getImage(),
+            'shop_id' => $product->getShopId()
         ], 'id');
     }
 
-    public function marketplace(): ?Marketplace
+    public function product(): ?Shop
     {
-        $res = $this->belongsTo(Marketplace::class, 'id', 'marketplace_id')->first();
-        return $res instanceof Marketplace ? $res : null;
+        $res = $this->belongsTo(Shop::class, 'id', 'shop_id')->first();
+        return $res instanceof Shop ? $res : null;
     }
 
 
@@ -86,13 +92,6 @@ class Product extends Model
         return $this->id;
     }
 
-    /**
-     * @return int
-     */
-    public function getMarketplaceId(): int
-    {
-        return $this->marketplace_id;
-    }
 
     /**
      * @return string

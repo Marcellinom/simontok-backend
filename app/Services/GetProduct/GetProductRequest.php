@@ -4,25 +4,25 @@ namespace App\Services\GetProduct;
 
 class GetProductRequest
 {
-    private int $marketplace_id;
+    private int $shop_id;
     private ?int $product_id;
 
     /**
-     * @param int $marketplace_id
+     * @param int $shop_id
      * @param int|null $product_id
      */
-    public function __construct(int $marketplace_id, ?int $product_id)
+    public function __construct(int $shop_id, ?int $product_id)
     {
-        $this->marketplace_id = $marketplace_id;
+        $this->shop_id = $shop_id;
         $this->product_id = $product_id;
     }
 
     /**
      * @return int
      */
-    public function getMarketplaceId(): int
+    public function getShopId(): int
     {
-        return $this->marketplace_id;
+        return $this->shop_id;
     }
 
     /**

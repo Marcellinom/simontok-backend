@@ -37,6 +37,15 @@ class Shop extends Model
         );
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Collection<Product>
+     */
+    public function products(): Collection
+    {
+        $res = $this->hasMany(Product::class, 'shop_id', 'id')->get();
+        return $res->filter(fn ($product) => $product instanceof Product);
+    }
+
     protected $table = 'shop';
 
     protected $casts = [
