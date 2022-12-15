@@ -75,7 +75,7 @@ class UserController extends Controller
     {
         $request = new LoginUserRequest($request->input('email'), $request->input('password'));
         $response = use_db_transaction(fn () => $service->execute($request));
-        return $this->successWithData($response)->header('token', $response->getToken());
+        return $this->successWithData($response)->header('Set-Cookie', "token=".$response->getToken());
     }
 
     /**
