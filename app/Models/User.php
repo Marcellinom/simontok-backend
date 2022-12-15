@@ -151,11 +151,11 @@ class User extends Authenticatable
     }
 
     /**
-     * @return Collection<Marketplace>
+     * @return Collection<Shop>
      */
-    public function marketplace(): Collection
+    public function shop(): Collection
     {
-        $res = $this->hasMany(Marketplace::class, 'user_id', 'id')->get();
-        return $res->filter(fn ($item) => $item instanceof Marketplace);
+        $res = $this->hasMany(Shop::class, 'user_id', 'id')->get();
+        return $res->filter(fn ($item) => $item instanceof Shop);
     }
 }

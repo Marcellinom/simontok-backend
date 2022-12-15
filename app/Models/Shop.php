@@ -7,25 +7,8 @@ use DateTime;
 use DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
-/**
- * App\Models\Shop
- *
- * @property int $id
- * @property int $user_id
- * @property string $name
- * @property \Illuminate\Support\Carbon $created_at
- * @property string $image
- * @method static \Illuminate\Database\Eloquent\Builder|Shop newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Shop newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Shop query()
- * @method static \Illuminate\Database\Eloquent\Builder|Shop whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Shop whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Shop whereImage($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Shop whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Shop whereUserId($value)
- * @mixin \Eloquent
- */
 class Shop extends Model
 {
     use HasFactory, Helper;
@@ -66,6 +49,15 @@ class Shop extends Model
     {
         $res = $this->belongsTo(User::class, 'user_id', 'id')->first();
         return $res instanceof User ? $res : null;
+    }
+
+    /**
+     * @return Collection<Category>
+     */
+    public function category(): Collection
+    {
+        $res = $this->hasMany(Category::class, 'id', 'shop_id')->get();
+        return $res->filter(fn ($res) => $res instanceof Category);
     }
 
     /**

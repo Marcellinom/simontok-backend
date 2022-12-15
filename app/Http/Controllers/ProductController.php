@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\CreateCategory\CreateCategoryRequest;
+use App\Services\CreateCategory\CreateCategoryService;
 use App\Services\CreateProduct\CreateProductRequest;
 use App\Services\CreateProduct\CreateProductService;
 use App\Services\EditProduct\AddProductMovementRequest;
 use App\Services\EditProduct\EditProductRequest;
 use App\Services\EditProduct\EditProductService;
+use App\Services\GetCategory\GetCategoryRequest;
+use App\Services\GetCategory\GetCategoryService;
 use App\Services\GetProduct\GetProductRequest;
 use App\Services\GetProduct\GetProductService;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Throwable;
@@ -62,5 +67,22 @@ class ProductController extends Controller
                 $request->query('product_id')
             ))
         );
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function CreateCategory(Request $request, CreateCategoryService $service): JsonResponse
+    {
+        use_db_transaction(fn () => $service->execute(new CreateCategoryRequest($request->input('names'), $request->input('shop_id')), $request->user()));
+        return $this->success();
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getCategories(Request $request, GetCategoryService $service): JsonResponse
+    {
+        return $this->successWithData($service->execute(new GetCategoryRequest($request->query('shop_id')), $request->user()));
     }
 }
