@@ -1,2 +1,5 @@
 *
 !.gitignore
+!product/
+!shop/
+!user/
