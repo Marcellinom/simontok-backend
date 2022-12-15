@@ -16,6 +16,14 @@ class LoginUserResponse implements JsonSerializable
         $this->token = $token;
     }
 
+    /**
+     * @return string
+     */
+    public function getToken(): string
+    {
+        return $this->token;
+    }
+
     public function jsonSerialize(): array
     {
         return [
