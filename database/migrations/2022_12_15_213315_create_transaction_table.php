@@ -16,12 +16,10 @@ return new class extends Migration
         Schema::create('transaction', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('marketplace_id');
-            $table->unsignedBigInteger('user_id');
             $table->float('total_price');
             $table->bigInteger('created_at');
 
             $table->foreign('marketplace_id')->references('id')->on('marketplace');
-            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

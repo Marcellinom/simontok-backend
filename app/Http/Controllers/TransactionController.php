@@ -21,7 +21,7 @@ class TransactionController extends Controller
                 array_map(function ($item) {
                     return new TransactionItemRequest($item['product_id'], $item['quantity']);
                 }, $request->input('items'))
-            ), $request->user()
+            )
         ));
         return $this->success();
     }

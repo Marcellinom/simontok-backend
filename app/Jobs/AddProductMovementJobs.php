@@ -2,14 +2,13 @@
 
 namespace App\Jobs;
 
-use App\Models\Product;
 use App\Models\ProductMovement;
 use Carbon\Carbon;
 use DB;
-use Doctrine\DBAL\Query\QueryException;
 use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Throwable;
@@ -59,7 +58,6 @@ class AddProductMovementJobs implements ShouldQueue
      */
     public function handle()
     {
-        DB::beginTransaction();
         try {
             $latest_movement = DB::table('product_movement')
                 ->orderBy('created_at', 'desc')
@@ -75,13 +73,8 @@ class AddProductMovementJobs implements ShouldQueue
                 'created_at' => Carbon::now()->getTimestamp()
             ]);
         } catch (QueryException $exception) {
-            DB::rollBack();
-            if ($exception[1] == 1062) $this->release(1);
+            if ($exception->errorInfo[1] == 1062) $this->release(2);
             else throw new Exception($this->direction);
-        } catch (Throwable $exception) {
-            DB::rollBack();
-            throw new $exception;
         }
-        DB::commit();
     }
 }

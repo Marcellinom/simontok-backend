@@ -24,6 +24,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::middleware(['auth:sanctum', 'must_verify_email'])->group(function () {
+    Route::get('/statistic', [UserController::class, 'getStatistic']);
+
     Route::post('/edit_user', [UserController::class, 'editUser']);
 
     Route::post('/register_marketplace', [MarketplaceController::class, 'registerMarketplace']);
@@ -40,8 +42,9 @@ Route::middleware(['auth:sanctum', 'must_verify_email'])->group(function () {
 
     Route::get('marketplace', [MarketplaceController::class, 'getMarketPlace']);
 
-    Route::post('/create_transaction', [TransactionController::class, 'createTransaction']);
 });
+Route::post('/create_transaction', [TransactionController::class, 'createTransaction']);
+
 Route::post('/reset_password', [UserController::class, 'reset_password']);
 Route::post('/register_user', [UserController::class, 'register']);
 Route::post('/forgot_password', [UserController::class, 'forgot_password']);

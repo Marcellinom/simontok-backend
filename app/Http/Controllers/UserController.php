@@ -18,6 +18,7 @@ use App\Services\ResetPassword\ResetPasswordRequest;
 use App\Services\ResetPassword\ResetPasswordService;
 use App\Services\SendEmailOtp\SendEmailOtpRequest;
 use App\Services\SendEmailOtp\SendEmailOtpService;
+use App\Services\Statistic\StatisticService;
 use App\Services\VerifyOtp\VerifyOtpRequest;
 use App\Services\VerifyOtp\VerifyOtpService;
 use Illuminate\Http\JsonResponse;
@@ -109,5 +110,10 @@ class UserController extends Controller
             $request->hasFile('image') ? $request->file('image') : null
         ), $request->user()));
         return $this->success();
+    }
+
+    public function getStatistic(Request $request, StatisticService $service): JsonResponse
+    {
+        return $this->successWithData($service->execute($request->user()));
     }
 }

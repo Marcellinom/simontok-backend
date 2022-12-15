@@ -2,18 +2,27 @@
 
 namespace App\Services\CreateTransaction;
 
+use App\Exceptions\ExpectedException;
+use App\Jobs\AddProductMovementJobs;
+use App\Models\Marketplace;
 use App\Models\Product;
+use App\Models\ProductMovement;
 use App\Models\Transaction;
 use App\Models\TransactionItem;
-use App\Models\User;
 use Carbon\Carbon;
+use Exception;
 
 class CreateTransactionService
 {
-    public function execute(CreateTransactionRequest $request, User $user): void
+    /**
+     * @throws Exception
+     */
+    public function execute(CreateTransactionRequest $request): void
     {
         $price_total = 0;
         $item_payload = [];
+        $marketplace = Marketplace::where('id', $request->getMarketplaceId())->first();
+        if (!$marketplace) ExpectedException::throw("Marketplace doesn't exists", 2045);
         foreach ($request->getItems() as $item) {
             $product = Product::where('id', $item->getProductId())->first();
             $price_total += $product->getUnitPrice() * $item->getQuantity();
@@ -21,9 +30,10 @@ class CreateTransactionService
                 "product_id" => $product->getId(),
                 "quantity" => $item->getQuantity()
             ];
+            $product_movement = ProductMovement::generate($marketplace->user()?->getId(), $product->getId(), 'out', $item->getQuantity());
+            AddProductMovementJobs::publish($product_movement);
         }
         $transaction = Transaction::create([
-            'user_id' => $user->getId(),
             'marketplace_id' => $request->getMarketplaceId(),
             'created_at' => Carbon::now()->getTimestamp(),
             'total_price' => $price_total

@@ -65,8 +65,17 @@ class Shop extends Model
      */
     public function category(): Collection
     {
-        $res = $this->hasMany(Category::class, 'id', 'shop_id')->get();
+        $res = $this->hasMany(Category::class, 'shop_id', 'id')->get();
         return $res->filter(fn ($res) => $res instanceof Category);
+    }
+
+    /**
+     * @return Collection<Marketplace>
+     */
+    public function marketplace(): Collection
+    {
+        $res = $this->hasMany(Marketplace::class, 'shop_id', 'id')->get();
+        return $res->filter(fn ($res) => $res instanceof Marketplace);
     }
 
     /**

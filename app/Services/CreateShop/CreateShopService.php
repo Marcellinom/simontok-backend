@@ -7,7 +7,6 @@ use App\Models\Shop;
 use App\Models\User;
 use Carbon\Carbon;
 use Exception;
-use Ramsey\Uuid\Uuid;
 use Storage;
 
 class CreateShopService

@@ -15,7 +15,6 @@ class Transaction extends Model
     protected $table = 'transaction';
     public $timestamps = false;
 //    private int $id;
-//    private int $user_id;
 //    private int $marketplace_id;
 //    private float $total_price;
 //    private DateTime $created_at;
@@ -25,7 +24,7 @@ class Transaction extends Model
 //    private Collection $items;
 
     protected $fillable = [
-        'user_id' , 'marketplace_id', 'total_price', 'created_at'
+        'marketplace_id', 'total_price', 'created_at'
     ];
 
     /**
@@ -50,14 +49,6 @@ class Transaction extends Model
     public function getId(): int
     {
         return $this->id;
-    }
-
-    /**
-     * @return int
-     */
-    public function getUserId(): int
-    {
-        return $this->user_id;
     }
 
     /**
