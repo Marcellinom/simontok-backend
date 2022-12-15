@@ -5,6 +5,7 @@ namespace App\Services\CreateProduct;
 use App\Exceptions\ExpectedException;
 use App\Models\Marketplace;
 use App\Models\Product;
+use App\Models\ProductCategory;
 use App\Models\User;
 use Carbon\Carbon;
 use Exception;
@@ -14,7 +15,7 @@ class CreateProductService
     /**
      * @throws Exception
      */
-    public function execute(CreateProductRequest $request, User $user)
+    public function execute(CreateProductRequest $request, User $user): void
     {
         $marketplace = Marketplace::where('id', $request->getMarketplaceId())->first();
 
@@ -32,14 +33,22 @@ class CreateProductService
             $id = \Storage::disk('public')->put('product/', $request->getImage());
         }
 
-        Product::persist(new Product([
-            'id' => null,
+        $product = Product::create([
             'marketplace_id' => $request->getMarketplaceId(),
             'name' => $request->getName(),
             'unit_price' => $request->getUnitPrice(),
-            'created_at' => Carbon::now(),
-            'image' => $id,
-            'category' => $request->getCategory()
-        ]));
+            'created_at' => Carbon::now()->getTimestamp(),
+            'image' => $id
+        ]);
+
+        $category_payload = [];
+        foreach ($request->getCategoriesId() as $item) {
+            $category_payload[] = [
+                'product_id' => $product->getId(),
+                'category_id' => $item
+            ];
+        }
+        ProductCategory::where('product_id', $product->getId())->delete();
+        ProductCategory::insert($category_payload);
     }
 }

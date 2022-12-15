@@ -9,22 +9,22 @@ class CreateProductRequest
     private int $marketplace_id;
     private string $name;
     private float $unit_price;
-    private string $category;
+    private array $categories_id;
     private ?UploadedFile $image;
 
     /**
      * @param int $marketplace_id
      * @param string $name
      * @param float $unit_price
-     * @param string $category
+     * @param array $categories_id
      * @param UploadedFile|null $image
      */
-    public function __construct(int $marketplace_id, string $name, float $unit_price, string $category, ?UploadedFile $image)
+    public function __construct(int $marketplace_id, string $name, float $unit_price, array $categories_id, ?UploadedFile $image)
     {
         $this->marketplace_id = $marketplace_id;
         $this->name = $name;
         $this->unit_price = $unit_price;
-        $this->category = $category;
+        $this->categories_id = $categories_id;
         $this->image = $image;
     }
 
@@ -53,11 +53,11 @@ class CreateProductRequest
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getCategory(): string
+    public function getCategoriesId(): array
     {
-        return $this->category;
+        return $this->categories_id;
     }
 
     /**

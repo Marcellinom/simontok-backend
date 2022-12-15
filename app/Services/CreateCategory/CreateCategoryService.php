@@ -20,14 +20,15 @@ class CreateCategoryService
         }
         $category = Category::whereIn('name', $request->getName());
         if ($category->exists()) {
-            ExpectedException::throw("category already exists!: {$category->get('name')->toArray()}", 2041);
+            $existing_category = join(", ", $category->get('name')->map(fn ($row) => $row->name)->toArray());
+            ExpectedException::throw("category already exists!: {$existing_category}", 2041);
         }
         $payload = [];
         foreach ($request->getName() as $item) {
-            $payload = [
+            $payload[] = [
                 'shop_id' => $request->getShopId(),
                 'name' => $item,
-                'created_at' => Carbon::now()
+                'created_at' => Carbon::now()->getTimestamp()
             ];
         }
         Category::insert($payload);

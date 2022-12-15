@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Shared\Helper;
 use App\Models\Shared\SimontokClassTrait;
+use Carbon\Carbon;
 use DateTime;
 use DB;
 use Illuminate\Database\Eloquent\Collection;
@@ -15,6 +16,7 @@ class Product extends Model
     use HasFactory, Helper;
 
     protected $table = 'product';
+    public $timestamps = false;
 
 //    private ?int $id;
 //    private int $marketplace_id;
@@ -36,8 +38,7 @@ class Product extends Model
             'name' => $product->getName(),
             'unit_price' => $product->getUnitPrice(),
             'created_at' => $product->getCreatedAt()->getTimestamp(),
-            'image' => $product->getImage(),
-            'category' => $product->getCategory()
+            'image' => $product->getImage()
         ], 'id');
     }
 
@@ -57,9 +58,9 @@ class Product extends Model
         return $res->filter(fn ($item) => $item instanceof ProductMovement);
     }
 
-    protected $casts = [
-        'created_at' => 'datetime'
-    ];
+//    protected $casts = [
+//        'created_at' => 'datetime'
+//    ];
 
     /**
      * @param string $name
@@ -114,7 +115,7 @@ class Product extends Model
      */
     public function getCreatedAt(): DateTime
     {
-        return $this->created_at;
+        return gettype($this->created_at) === 'integer' ? Carbon::createFromTimestamp($this->created_at) : $this->created_at;
     }
 
     /**
@@ -123,13 +124,5 @@ class Product extends Model
     public function getImage(): string
     {
         return $this->image;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCategory(): string
-    {
-        return $this->category;
     }
 }

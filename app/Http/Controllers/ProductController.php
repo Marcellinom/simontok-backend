@@ -31,7 +31,7 @@ class ProductController extends Controller
                 $request->input('marketplace_id'),
                 $request->input('name'),
                 (float)$request->input('unit_price'),
-                $request->input('category'),
+                $request->input('category_id'),
                 $request->hasFile('image') ? $request->file('image') : null
             ),
             $request->user()

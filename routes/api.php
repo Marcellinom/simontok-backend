@@ -30,7 +30,7 @@ Route::middleware(['auth:sanctum', 'must_verify_email'])->group(function () {
     Route::post('/create_shop', [ShopController::class, 'createShop']);
     Route::get('/shop', [ShopController::class, 'getShop']);
 
-    Route::post('/create_product', [ProductController::class, 'CreateCategory']);
+    Route::post('/create_category', [ProductController::class, 'CreateCategory']);
     Route::get('/category', [ProductController::class, 'getCategories']);
 
     Route::post('/create_product', [ProductController::class, 'createProduct']);
